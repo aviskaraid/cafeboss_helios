@@ -18,4 +18,5 @@ $routes->group('apis', ['namespace' => 'Modules\API\Controllers'], function($rou
     $routes->get('get_store', 'ApiAppsController::getStore');
     $routes->get('get_employeegroup', 'ApiAppsController::getEmployeeGroup');
     $routes->get('get_employee', 'ApiAppsController::getEmployee');
+    $routes->get('get_pos_table_area','ApiAppsController::getPosTableArea');
 });

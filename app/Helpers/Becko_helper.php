@@ -330,3 +330,31 @@ if (!function_exists('live_user_menu')) {
         return $menus;
     }
 }
+
+
+// BUSINESS
+
+if (!function_exists('business_detail')) {
+    function business_detail() {
+
+        // QUERY BUILDER
+        $db = \Config\Database::connect();
+        $builder = $db->table('business');
+        $builder->where('id', 1);
+        $query = $builder->get();
+        return $query->getRow();
+    }
+}
+
+if (!function_exists('setup_business')){
+    function setup_business($col = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('business_setup');
+        if($col != ''){
+            $builder->select($col);
+        }
+        $builder->where('id', 1);
+        $query = $builder->get();
+        return $query->getRow();
+    }
+}

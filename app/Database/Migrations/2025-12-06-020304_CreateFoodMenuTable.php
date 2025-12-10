@@ -18,6 +18,7 @@ class CreateFoodMenuTable extends Migration
             'description'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'category_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'type_id'           => ['type' => 'int', 'constraint' => 11, 'unsigned' => false, 'default' => 0],
+            'as_combo'          => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'as_modifiers'      => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'as_variants'       => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'premade'           => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],

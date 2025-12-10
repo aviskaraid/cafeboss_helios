@@ -63,10 +63,16 @@ class TablesModel extends Model
 
     public function getPaginated($num, $keyword = null, $status = 1) {
         $builder = $this->builder();
+        $builder->select('pos_table.*,
+        a.name as area_name,
+        a.description as area_description,
+        b.name as store_name,
+        b.description as store_description ');
+        $builder->join('pos_table_area a', 'a.id = pos_table.area_id');
+        $builder->join('stores b', 'b.id = a.store_id');
         if($keyword != '') {
-            $builder->like('code', $keyword);
-            $builder->orLike('name', $keyword);
-            $builder->orLike('description', $keyword);
+            $builder->like('pos_table.name', $keyword);
+            $builder->orLike('pos_table.description', $keyword);
         }
         return [
             'tables' => $this->paginate($num),

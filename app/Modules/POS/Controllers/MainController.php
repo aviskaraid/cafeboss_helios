@@ -10,22 +10,16 @@ class MainController extends BaseController
 
     public function index()
     {
-        // Example data to send to the view
+        $business = business_detail();
+        $jsonBusiness = json_encode($business);
+        setcookie("business",$jsonBusiness);
+        $prefix = setup_business("stores_prefixes")->stores_prefixes;
+        setcookie("prefix",$prefix);
+        $user = json_encode(session()->get('user_login'));
+        setcookie('user', $user,0, "/");
         $data = [
-            'title' => 'Welcome to POS module',
-            'message' => 'This is an HMVC example in CodeIgniter 4'
-        ];
-
-        // Example of how to call a view with hmvcView
-        // Syntax: hmvcView(string $module, string $view, array $data = [], array $options = [])
-        //
-        // $module: Name of the module (folder) where the view is located
-        // $view: Name of the view file without the .php extension
-        // $data: Associative array with the data to pass to the view (optional)
-        // $options: Array of additional options for the view (optional)
-        //
-        // Usage example:
-        //return hmvcView($this->module, 'index', $data, ['cache' => 300]);
+            'title' => 'CafeBoss',
+            ];
         return hmvcView($this->module, 'main', $data);
     }
 }

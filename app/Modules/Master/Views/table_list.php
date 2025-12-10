@@ -61,6 +61,7 @@
                   <th>#</th>
                   <th>Name</th>
                   <th>Description</th>
+                  <th>Store</th>
                   <th>Area</th>
                   <th></th>
                 </tr>
@@ -74,7 +75,8 @@
                     <td><?=$no++?></td>
                     <td><?=content_wrap($value['name'],20)?></td>
                     <td><?=content_wrap($value['description'],20)?></td>
-                       <td><?=content_wrap($value['area'],20)?></td>
+                    <td><?=content_wrap($value['store_name'],20)?></td>length: 
+                    <td><?=content_wrap($value['area_name'],20)?></td>
                     <td class="text-center" style="width:10%">
                       <a href="<?=site_url('master/table/edit/'.$value['id'])?>" class="btn btn-info btn-sm <?= (($value['id']==1 && isSuperAdmin()) || ($value['id']!=1 && (isAdminApps()||isSuperAdmin())))?"":"disabled"; ?>" title="Setup"><i class="fas fa-pencil-alt"></i>Edit</a>   
                     </td>

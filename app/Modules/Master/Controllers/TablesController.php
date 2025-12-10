@@ -27,6 +27,11 @@ class TablesController extends BaseController
         return hmvcView($this->module, 'table_area_list', $data);
     }
 
+    public function create(): string{
+        $data['title'] = "New Table"; 
+        return hmvcView($this->module, 'table_create', $data);
+    }
+
     public function area_create(): string{
         $data['title'] = "New Table Area"; 
         return hmvcView($this->module, 'table_area_create', $data);
@@ -53,4 +58,20 @@ class TablesController extends BaseController
         return json_response($data,200,$message);
     }
 
+    public function create_process(){
+        $tables = new TablesModel();
+        $post = $this->request->getJSON(true);
+        $message = "Successfully";
+        $add_table =[
+            "name"              =>$post['name'],
+            "description"       =>$post['description'],
+            "area_id"           =>$post['input_area'],
+            "person"            =>$post['person'],
+            "spesification"     =>$post['spesification']
+        ];
+        $tables->insert($add_table);
+        $data['post'] = $post;
+        $data['redirect'] = "master/table";
+        return json_response($data,200,$message);
+    }
 }

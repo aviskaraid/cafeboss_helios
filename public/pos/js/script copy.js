@@ -195,13 +195,13 @@
       transaction_pending:[],
       async initDatabase() {
         this.db = await loadDatabase();
-        //this.loadCategory();
-        //this.loadProducts();
-        //this.loadTablePos();
-        //this.loadMember(); 
-        //this.loadBranch();
-        //this.check_openStore();
-        //this.initialData();
+        this.loadCategory();
+        this.loadProducts();
+        this.loadTablePos();
+        this.loadMember(); 
+        this.loadBranch();
+        this.check_openStore();
+        this.initialData();
       }, 
       async loadCategory() {
         this.category = await this.db.getCategory();

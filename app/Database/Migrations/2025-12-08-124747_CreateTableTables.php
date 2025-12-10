@@ -15,7 +15,7 @@ class CreateTableTables extends Migration
             'description'           => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'type'                  => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
             'person'                => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
-            'spesification'         => ['type' => 'tinyint', 'constraint' => 200, 'null' => true],
+            'spesification'         => ['type' => 'varchar', 'constraint' => 200, 'null' => true],
             'reservation'           => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'reservation_name'      => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'open_at'               => ['type' => 'TIME', 'null' => true],

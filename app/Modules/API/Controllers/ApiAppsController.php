@@ -106,6 +106,13 @@ class ApiAppsController extends BaseController{
         return $this->response->setJSON($getCat);
     }
 
+    public function getPosTableArea(){
+        $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $getCat = $apis->getPosTableArea($keyword);
+        return $this->response->setJSON($getCat);
+    }
+
     public function getEmployeeGroup(){
         $keyword = $this->request->getGet('keyword');
         $apis = new AppsModel();

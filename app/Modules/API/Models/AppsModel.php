@@ -93,6 +93,17 @@ class AppsModel extends Model
         return $query->getResult();
     }
 
+    public function getPosTableArea($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('pos_table_area');
+        $builder->where("business_id",1);
+        if($keyword != '') {
+            $builder->like('name', strtolower($keyword));
+        }       
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
     public function getItemCategory($keyword = null) {
         $db = \Config\Database::connect();
         $builder = $db->table('item_category a');
