@@ -98,10 +98,34 @@ class AppsModel extends Model
         $builder = $db->table('pos_table_area');
         $builder->where("business_id",1);
         if($keyword != '') {
-            $builder->like('name', strtolower($keyword));
+            $builder->like('store_id', $keyword);
         }       
         $query = $builder->get();
         return $query->getResult();
+    }
+
+    public function getPosTable($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('pos_table');
+        $builder->select('pos_table.*,
+        a.id as area_id,
+        a.store_id as store_id,
+        a.smoking as area_smoking,
+        a.meeting as area_meeting,
+        a.ac as area_ac');
+        $builder->join('pos_table_area a', 'a.id = pos_table.area_id');
+        if($keyword != '') {
+            $builder->where('a.store_id', $keyword);
+        }
+        $result = $builder->get()->getResultArray();
+        foreach($result as $key=>&$value){
+        $db = \Config\Database::connect();
+        $childBuilder = $db->table('pos_transactions'); // Specify the other table
+        $childBuilder->where("table_id",$value['id']);
+        $getPosTrans = $childBuilder->get()->getRow();
+        $value['sales'] = $getPosTrans;
+        }
+        return $result;
     }
 
     public function getItemCategory($keyword = null) {
@@ -163,6 +187,7 @@ class AppsModel extends Model
         $builder->where("active = 1");
         if($keyword != '') {
            $builder->like('name', $keyword);
+           $builder->orLike('id', $keyword);
         }       
         $query = $builder->get();
         return $query->getResult();

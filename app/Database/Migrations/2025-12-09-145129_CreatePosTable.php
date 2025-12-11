@@ -23,6 +23,7 @@ class CreatePosTable extends Migration
             'total_card'            => ['type' => 'decimal', 'constraint' => '22,2', 'null' => false,'default'    => 0.00],
             'total_transfer'        => ['type' => 'decimal', 'constraint' => '22,2', 'null' => false,'default'    => 0.00],
             'closing_note'          => ['type' => 'varchar', 'constraint' => 200, 'null' => true],
+            'session_pos'           => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'created_by'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'created_at'            => ['type' => 'datetime', 'null' => true],
             'updated_at'            => ['type' => 'datetime', 'null' => true],

@@ -358,3 +358,27 @@ if (!function_exists('setup_business')){
         return $query->getRow();
     }
 }
+
+if (!function_exists('apps')){
+    function apps($col = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('apps');
+        if($col != ''){
+            $builder->select($col);
+        }
+        $builder->where('id', 1);
+        $query = $builder->get();
+        return $query->getRow();
+    }
+}
+
+if (!function_exists('get_user')) {
+    function get_user(int $id) {
+        // QUERY BUILDER
+        $db = \Config\Database::connect();
+        $builder = $db->table('users');
+        $builder->where('id', $id);
+        $query = $builder->get();
+        return $query->getRow();
+    }
+}

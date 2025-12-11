@@ -6,7 +6,11 @@
         <a href="#" class="nav-link has-dropdown"><i class="<?= $value['icon_image'] ?>"></i><span><?= $value['name']?></span></a>
         <ul class="dropdown-menu">
         <?php foreach ($value['module'] as $subkey => $subvalue):?>
-            <li><a class="nav-link" href="<?=site_url($subvalue['url'])?>"><i class="<?= $subvalue['icon_image'] ?>"></i><?= $subvalue['name'] ?></a></li>
+            <?php if( $subvalue['url']==="posmain"):?>
+                <li><a target="_blank" class="nav-link" href="<?=site_url($subvalue['url'])?>"><i class="<?= $subvalue['icon_image'] ?>"></i><?= $subvalue['name'] ?></a></li>
+            <?php else:?>
+                <li><a class="nav-link" href="<?=site_url($subvalue['url'])?>"><i class="<?= $subvalue['icon_image'] ?>"></i><?= $subvalue['name'] ?></a></li>
+            <?php endif?>
         <?php endforeach?> 
         </ul>
         </li>
