@@ -3,6 +3,7 @@ $(function() {
     let base_url = $("#baseUrl").val();
     // Localhost server
     // Test
+    // TEST2
     $('#units_create').on('submit', function(e) {
              const myForm = document.querySelector('#units_create');
             e.preventDefault();
