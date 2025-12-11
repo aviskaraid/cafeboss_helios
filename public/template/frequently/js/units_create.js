@@ -1,7 +1,8 @@
 $(function() {
     "use strict";
     let base_url = $("#baseUrl").val();
-
+    // Localhost server
+    // Test
     $('#units_create').on('submit', function(e) {
              const myForm = document.querySelector('#units_create');
             e.preventDefault();
