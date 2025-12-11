@@ -53,7 +53,7 @@ $(document).ready(function() {
     if(getCookie('user_access')=== null && getCookie('user_menu')=== null){
         showLoader();
         $.ajax({
-        url:'http://localhost:8080/apis/get_access_user_menu/'+id,
+        url:base_url+'apis/get_access_user_menu/'+id,
         method:"get",
         dataType:"json",
         success: function(response) {
