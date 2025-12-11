@@ -3,15 +3,13 @@ name: PHP Composer
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CI_ENVIRONMENT: ${{ secrets.VITE_SERVER_URL }}
+      app.baseURL: ${{ secrets.VITE_NODE_ENV }}
 
     steps:
           - name: Checkout code
@@ -37,4 +35,6 @@ jobs:
               script: |
                 cd /var/www/html/cafeboss_helios # Adjust to your server path
                 git pull origin main
+                rm -rf .env
+                cp /var/www/html/.env /var/www/html/cafeboss_helios/.env
                 composer install --no-interaction --prefer-dist
