@@ -25,7 +25,7 @@ class MainController extends BaseController
             ];
         return hmvcView($this->module, 'main', $data);
     }
-
+    // test deploy
     public function check_openShift(){
         $json = $this->request->getJSON();
         if($json){
