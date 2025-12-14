@@ -228,6 +228,24 @@ if (!function_exists('becko_business_code')) {
     }
 }
 
+if (!function_exists('becko_customer_code')) {
+    function becko_customer_code(int $length = 10, bool $capitalize = false){
+        $db = \Config\Database::connect();
+        $code = "";
+        for ($i=0; $i <20 ; $i++) { 
+            $code = generateRandomString($length,$capitalize);
+            $builder = $db->table('customers');
+            $builder->where('code', $code);
+            if($builder->countAllResults()>0){
+                continue;
+            }else{
+                break;
+            }
+        }
+        return $code;
+    }
+}
+
 function generateRandomString($length = 10, bool $Capitalize = false) {
     $source = "";
     $char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";

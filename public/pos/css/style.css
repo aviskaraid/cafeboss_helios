@@ -237,13 +237,12 @@ img {
 }
 
 .description {
-  font-size: 0.8em;
-  font-weight:normal;
-  color: #320505;
-   padding: 0px 5px 0px 0px;
-  font-weight: 700;
-  text-transform: uppercase;
-
+    font-size: 0.8em;
+    font-weight:normal;
+    color: #320505;
+    font-weight: 700;
+    justify-content: center;
+    text-transform: uppercase;
 }
 .favorit {
    justify-content: end;
@@ -255,10 +254,9 @@ img {
 }
 
 .price {
-    justify-content: end;
-    font-size: 1.2em;
+    font-size: 0.8em;
     font-weight: bold;
-    padding: 10px 5px 0px 10px;
+    justify-content: center;
     color: #6d6a6a;
 }
 

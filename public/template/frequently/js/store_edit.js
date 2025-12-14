@@ -97,17 +97,17 @@ $(function() {
                                     timer: 2500
                                 });
                             }else{
-                                // Swal.fire({
-                                //     position: "center",
-                                //     icon: "success",
-                                //     title: "Data Sucessfully Inserted",
-                                //     text: data.message,
-                                //     showConfirmButton: false,
-                                //     timer: 2500,
-                                //     willClose: () => {
-                                //         window.location.replace('/'+data.data.redirect);
-                                //     }
-                                // });
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "Data Sucessfully Inserted",
+                                    text: data.message,
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    willClose: () => {
+                                        window.location.replace('/'+data.data.redirect);
+                                    }
+                                });
                                 console.log(data);
                             }
                     })

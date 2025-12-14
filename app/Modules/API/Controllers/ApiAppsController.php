@@ -92,6 +92,13 @@ class ApiAppsController extends BaseController{
         return $this->response->setJSON($getCat);
     }
 
+    public function getFoodMenuByStore(){
+        $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $getCat = $apis->getFoodMenu($keyword);
+        return $this->response->setJSON($getCat);
+    }
+
     public function getDepartment(){
         $keyword = $this->request->getGet('keyword');
         $apis = new AppsModel();
@@ -131,6 +138,13 @@ class ApiAppsController extends BaseController{
         $keyword = $this->request->getGet('keyword');
         $apis = new AppsModel();
         $getCat = $apis->getEmployee($keyword);
+        return $this->response->setJSON($getCat);
+    }
+
+    public function getCustomer(){
+        $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $getCat = $apis->getCustomer($keyword);
         return $this->response->setJSON($getCat);
     }
 

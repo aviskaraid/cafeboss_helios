@@ -55,6 +55,7 @@
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Image</th>
                   <th>Code</th>
                   <th>Name</th>
                   <th>Display Name</th>
@@ -69,6 +70,9 @@
                 foreach ($foodmenu as $key => $value) : ?>
                   <tr>
                     <td><?=$no++?></td>
+                    <td>
+                    <?php $imageUrl = (($value['picture']==null))?"/uploads/noImage.png":$value['picture']?>
+                    <img src="<?=base_url($imageUrl); ?>"style="height: 30px; width:50%; object-fit: fill;"></td>
                     <td><?=content_wrap($value['code'],20)?></td>
                     <td><?=content_wrap($value['name'],20)?></td>
                     <td><?=content_wrap($value['display_name'],30)?></td>

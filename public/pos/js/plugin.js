@@ -1,7 +1,7 @@
 "use strict";
 $(document).ready(function() {
         $('.choose_branch').select2({
-            placeholder: "Select a Branch",
+            placeholder: "Select a Store",
             allowClear: true
         });
          $('#choose_branch').on('select2:select', function (e) {
@@ -81,6 +81,14 @@ function numberFormat(number) {
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 }
 
+function numberFormatDisplay(number) {
+    return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 2, // Ensure at least 2 decimal places
+    maximumFractionDigits: 2, // Ensure no more than 2 decimal places
+    }).format(number);
+}
 function getTimer(stringDate){
 const now = new Date().getTime();
 const bookingTime = new Date(stringDate).getTime();
@@ -95,7 +103,11 @@ const timeCount = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 return timeCount;
 }
 function splitString(sparat,string){
-const sentence = string;
-const words = sentence.split(sparat);
-return words;
+    const sentence = string;
+    const words = sentence.split(sparat);
+    return words;
+}
+function dateFormat(date) {
+        const formatter = new Intl.DateTimeFormat('id', { dateStyle: 'short', timeStyle: 'short'});
+        return formatter.format(date);
 }

@@ -306,4 +306,29 @@ class AppsModel extends Model
         return $query->getResult();
     }
 
+    public function getFoodMenu($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('foodmenu');
+        $builder->select('foodmenu.*,
+        a.category_id as category_id');
+        $builder->join('foodmenu_category_map a', 'a.foodmenu_id = foodmenu.id');
+        $builder->join('store_category_map b', 'b.category_id = a.category_id');
+        if($keyword != '') {
+            $builder->where('b.store_id', $keyword);
+        }
+        $builder->groupBy("foodmenu.id");
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
+    public function getCustomer($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('customers');
+        if($keyword != '') {
+            $builder->where('username', $keyword);
+        }
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
 }

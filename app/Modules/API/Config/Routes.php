@@ -14,10 +14,12 @@ $routes->group('apis', ['namespace' => 'Modules\API\Controllers'], function($rou
     $routes->get('get_foodmenu_category', 'ApiAppsController::get_foodmenu_category');
     $routes->get('get_foodmenu_category_bymenu', 'ApiAppsController::getFoodMenuCategoryByFoodMenu');
     $routes->get('get_foodmenu_category_bystore','ApiAppsController::getFoodMenuCategoryByStore');
+    $routes->get('get_foodmenu_bystore','ApiAppsController::getFoodMenuByStore');
     $routes->get('get_department', 'ApiAppsController::getDepartment');
     $routes->get('get_store', 'ApiAppsController::getStore');
     $routes->get('get_employeegroup', 'ApiAppsController::getEmployeeGroup');
     $routes->get('get_employee', 'ApiAppsController::getEmployee');
     $routes->get('get_pos_table_area','ApiAppsController::getPosTableArea');
     $routes->get('get_pos_table','ApiAppsController::getPosTable');
+    $routes->get('get_customer','ApiAppsController::getCustomer');
 });

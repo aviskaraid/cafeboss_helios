@@ -4,6 +4,7 @@ namespace Modules\POS\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Master\Models\StoresModel;
+use Modules\Master\Models\UsersModel;
 use Modules\POS\Models\PosModel;
 class MainController extends BaseController
 {   
@@ -18,8 +19,11 @@ class MainController extends BaseController
         $server = apps("server_url")->server_url;
         setcookie("prefix",$prefix);
         setcookie("server",$server);
-        $user = json_encode(session()->get('user_login'));
-        setcookie('user', $user,0, "/");
+        $userModel = new UsersModel();
+        $whreUser = ['id'=>session()->get("user_login")->id];
+        $getUser = $userModel->getFind($whreUser)[0];
+        //dd(json_encode($getUser,JSON_PRETTY_PRINT));
+        setcookie('user', json_encode($getUser),0, "/");
         $data = [
             'title' => 'CafeBoss',
             ];
@@ -36,7 +40,8 @@ class MainController extends BaseController
                 if($getExist!=null){
                     $dataS = $getExist[0];
                     $wStores = ['id'=>$dataS->store_id];
-                    $getStores= $stores->getFind($wStores);
+                    $setupNested = ["store_setup"=>"store_id"];
+                    $getStores= $stores->getFind($wStores,null,null,0,0,$setupNested);
                     $dataS->store = $getStores[0];
                     return $this->response->setJSON(['status' => 'success', 'message' => "Data is Exist",'data'=>$dataS]);
                 } else {
@@ -83,5 +88,11 @@ class MainController extends BaseController
         // $cookie_value = "dark_mode";
         // $expiration_time = time() + (86400 * 1); // Cookie expires in 1 days
         //setcookie($cookie_name, $cookie_value, $expiration_time, "/");
+    }
+
+    public function inputTransaction(){
+        $json = $this->request->getJSON();
+        return $this->response->setJSON(['status' => 'success', 'message' => 'data Tidak ada','data'=>$json]);
+        
     }
 }
