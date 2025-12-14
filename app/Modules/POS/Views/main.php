@@ -718,6 +718,7 @@
                 </div>
             </div>
         </div>
+        <!--- ADD-->
         <!-- modal member Input -->
         <div x-show="isShowMember"
         class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
