@@ -9,9 +9,8 @@ use Modules\POS\Models\PosModel;
 class MainController extends BaseController
 {   
     private $module = 'POS'; // Module name
-
-    public function index()
-    {
+    #edit pos
+    public function index(){
         $business = business_detail();
         $jsonBusiness = json_encode($business);
         setcookie("business",$jsonBusiness);
