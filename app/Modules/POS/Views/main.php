@@ -358,13 +358,6 @@
                                 <div class="text-right w-full" x-text="priceFormat(subTotal)"></div>
                             </div>
                         </div>
-                        <div x-show="change == 0 && cart.length > 0"
-                        class="flex justify-center mb-3 text-lg font-semibold bg-cyan-50 text-cyan-700 rounded-lg py-2 px-3"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                            </svg>
-                        </div>
                         <button x-show="take_away=='1'"
                             class="text-white rounded-2xl text-lg w-full py-3 focus:outline-none"
                             x-bind:class="{
@@ -385,13 +378,10 @@
                         </button>
                     </div>
                     <!-- end Payment Info -->
-                         
                     </div>
                 </div>    
             </div>
             <!-- end Col 2 -->
-             
-            
         </div>
         <div x-show="firstBalance" 
             class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
@@ -715,6 +705,9 @@
                 </div>
                 <div class="p-4 -mt-2 w-full">
                 <button x-on:click="submitToOrder(false)" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Submit</button>
+                </div>
+                <div class="p-4 gap-2 w-full">
+                <button class=" bg-gray-200 text-gray-400 text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="closeAllForm()">Close</button>
                 </div>
             </div>
         </div>

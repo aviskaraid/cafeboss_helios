@@ -92,7 +92,7 @@ class MainController extends BaseController
 
     public function inputTransaction(){
         $json = $this->request->getJSON();
-        return $this->response->setJSON(['status' => 'success', 'message' => 'data Tidak ada','data'=>$json]);
+        return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','data'=>$json]);
         
     }
 }

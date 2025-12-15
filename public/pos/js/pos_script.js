@@ -29,7 +29,7 @@
       start_time:null,
       end_time:null,
       business:{},
-      user:{},
+      user:(getCookie('user')!==null)?JSON.parse(getCookie('user')):null,
       
       //params//
 
@@ -310,9 +310,14 @@
       },
       submitToPayForm(){
         this.isShowPayForm = true;
+        console.log("User "+JSON.stringify(this.user));
       },
       closeHPForm(){
         this.isShowHoldAndPay = false;
+      },
+      closeAllForm(){
+        this.isShowHoldAndPay = false;
+        this.isShowPayForm = false;
       },
       submit(){
         console.log("Submit");
