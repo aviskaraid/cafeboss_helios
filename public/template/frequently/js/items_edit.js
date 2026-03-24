@@ -1,0 +1,425 @@
+$(function() {
+    "use strict";
+    let base_url = $("#baseUrl").val();
+    let item_id =  document.getElementById("item_id").value;
+    let input_item_category =  document.getElementById("input_item_category").value;
+    let input_item_units =  document.getElementById("input_main_unit").value;
+    let input_purchase_unit =  document.getElementById("input_purchase_unit").value;
+    $(document).ready(function() {
+        $('.item_category').select2({
+            placeholder: 'Search for an Item Category',
+            ajax: {
+            url: base_url+'apis/get_item_category', // The URL of your API
+            dataType: 'json',
+            delay: 250, // Wait 250ms after user stops typing to make the request
+            data: function(params) {
+                return {
+                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
+                page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
+                    return {
+                            id: item.id,
+                            text: item.parent_id !== "0" ?`-- ${item.label_name}` : item.label_name,
+                        };
+                    });
+                return {
+                results: formattedData,
+                pagination: {
+                    more: (params.page * 30) < data.total_count // Example pagination logic
+                }
+                };
+            },
+            cache: true
+            },
+            minimumInputLength: 0 // Only start searching after the user types 1 character
+        });
+        $('#item_category').on('select2:select', function (e) {
+            var data = e.params.data;
+            var id = data.id;
+            console.log("Item Category "+id);
+            document.getElementById("input_item_category").value=id;
+        });
+        $('.item_units').select2({
+            placeholder: 'Search for an Item Units',
+            ajax: {
+            url: base_url+'apis/get_item_units', // The URL of your API
+            dataType: 'json',
+            delay: 250, // Wait 250ms after user stops typing to make the request
+            data: function(params) {
+                return {
+                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
+                page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
+                    return {
+                            id: item.id,
+                            text: item.name
+                        };
+                    });
+                return {
+                results: formattedData,
+                pagination: {
+                    more: (params.page * 30) < data.total_count // Example pagination logic
+                }
+                };
+            },
+            cache: true
+            },
+            minimumInputLength: 0 // Only start searching after the user types 1 character
+        });
+        $('#item_units').on('select2:select', function (e) {
+            var data = e.params.data;
+            var id = data.id;
+            console.log("Item Units "+id);
+            document.getElementById("input_main_unit").value=id;
+        });
+        $('.item_units_purchase').select2({
+            placeholder: 'Search for an Item Units Purchase',
+            ajax: {
+            url: base_url+'apis/get_item_units', // The URL of your API
+            dataType: 'json',
+            delay: 250, // Wait 250ms after user stops typing to make the request
+            data: function(params) {
+                return {
+                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
+                page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
+                    return {
+                            id: item.id,
+                            text: item.name
+                        };
+                    });
+                return {
+                results: formattedData,
+                pagination: {
+                    more: (params.page * 30) < data.total_count // Example pagination logic
+                }
+                };
+            },
+            cache: true
+            },
+            minimumInputLength: 0 // Only start searching after the user types 1 character
+        });
+        $('#item_units_purchase').on('select2:select', function (e) {
+            var data = e.params.data;
+            var id = data.id;
+            console.log("Purchase Items Units "+id);
+            document.getElementById("input_purchase_unit").value=id;
+        });
+        $('.warehouse').select2({
+            multiple: true,
+            placeholder: 'Search for an Warehouse',
+            ajax: {
+            url: base_url+'apis/get_warehouse', // The URL of your API
+            dataType: 'json',
+            delay: 250, // Wait 250ms after user stops typing to make the request
+            data: function(params) {
+                return {
+                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
+                page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
+                    return {
+                            id: item.id,
+                            text: item.name
+                        };
+                    });
+                return {
+                results: formattedData,
+                pagination: {
+                    more: (params.page * 30) < data.total_count // Example pagination logic
+                }
+                };
+            },
+            cache: true
+            },
+            minimumInputLength: 0 // Only start searching after the user types 1 character
+        });
+        $('#warehouse').on('select2:select', function (e) {
+            var data = e.params.data;
+            var id = data.id;
+            console.log("Warehouse "+id);
+            document.getElementById("input_warehouse").value=$('#warehouse').val();
+        });
+        $('.item_supplier').select2({
+            multiple: true,
+            placeholder: 'Search for an Supplier',
+            ajax: {
+            url: base_url+'apis/get_supplier', // The URL of your API
+            dataType: 'json',
+            delay: 250, // Wait 250ms after user stops typing to make the request
+            data: function(params) {
+                return {
+                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
+                page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
+                    return {
+                            id: item.id,
+                            text: item.name
+                        };
+                    });
+                return {
+                results: formattedData,
+                pagination: {
+                    more: (params.page * 30) < data.total_count // Example pagination logic
+                }
+                };
+            },
+            cache: true
+            },
+            minimumInputLength: 0 // Only start searching after the user types 1 character
+        });
+        $('#item_supplier').on('select2:select', function (e) {
+            var data = e.params.data;
+            var id = data.id;
+            console.log("Supplier "+id);
+            document.getElementById("input_supplier").value=$('#item_supplier').val();
+        });
+        $('#items_changes').on('submit', function(e) {
+             const myForm = document.querySelector('#items_changes');
+            e.preventDefault();
+            const nameStatus = document.getElementById("nameInput").value.length;
+            const descriptionStatus = document.getElementById("descriptionInput").value.length;
+            const displayNameValue = document.getElementById("displaynameInput").value.length;
+            const skuValue = document.getElementById("skuInput").value.length;
+            const CodeValue = document.getElementById("items_code").value.length;
+            console.log(nameStatus);
+            console.log(descriptionStatus);
+            console.log(displayNameValue);
+            console.log(skuValue);
+            console.log(CodeValue);
+            if(nameStatus===0 || descriptionStatus===0 || displayNameValue ===0 || skuValue ===0 || CodeValue===0){
+                Swal.fire({
+                    title: "Form Not Completed",
+                    icon: "error",
+                    draggable: true
+                });
+            }else{
+            Swal.fire({
+                    title: 'Are you sure you Want Proceed Form ? ',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, submit Form!'
+                }).then((result) => {
+                    showLoader();
+                    const formData = new FormData(myForm);
+                    const data = Object.fromEntries(formData.entries());
+                    fetch(base_url +'master/items/changes/'+item_id, { // Replace '/auth/login' with your CI4 login route
+                        method: 'PATCH', // Use POST or the appropriate method for your login route
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data) // Send your data as JSON
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status!==200) {
+                                var err = data.data.errors;
+                                Swal.fire({
+                                        position: "center",
+                                        icon: "error",
+                                        title: JSON.stringify(err),
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    });
+                                }else{
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: "success",
+                                        title: "Success Changed Item",
+                                        text: data.message,
+                                        showConfirmButton: false,
+                                        timer: 2500,
+                                        willClose: () => {
+                                            window.location.replace('/'+data.data.redirect);
+                                        }
+                                    });
+                                }
+                        })
+                        .catch(error => {
+                        console.error('Error:', error.message);
+                            try {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "error",
+                                    title: error.message,
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                    });
+                            } catch (e) {
+                                console.log('Error message is not JSON:', error.message);
+                            }
+                        });
+
+                });
+            }
+            
+            
+        });
+    });
+    
+    $(document).ready(function() {
+        // Fetch the item category data and populate the select2 dropdown
+            const selectElementSupplier = $('#item_supplier');
+            const selectElement = $('#item_category');
+            const selectElementMainUnit = $('#item_units');
+            const selectElementPurchaseUnit = $('#item_units_purchase');
+            const selectElementWarehouse = $('#warehouse');
+            fetch(base_url+'apis/get_item_category?keyword='+input_item_category)
+            .then(response => response.json())
+            .then(data => {
+                if(data.length>0){
+                    data.forEach(function(cat) {
+                        const option = new Option(cat.label_name, cat.id, true, true); 
+                        selectElement.append(option).trigger('change');
+                        selectElement.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                        document.getElementById("input_item_category").value=$('#item_category').val();
+                    });
+                }else{
+                    console.log("Tidak Ada Data "+data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+
+            // Fetch the item units data and populate the select2 dropdown
+            fetch(base_url+'apis/get_item_units?keyword='+input_item_units)
+            .then(response => response.json())
+            .then(data => {
+                if(data.length>0){
+                    data.forEach(function(cat) {
+                        const option = new Option(cat.name, cat.id, true, true); 
+                        selectElementMainUnit.append(option).trigger('change');
+                        selectElementMainUnit.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                        document.getElementById("input_main_unit").value=$('#item_units').val();
+                    });
+                }else{
+                    console.log("Tidak Ada Data "+data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+
+            // Fetch the item purchase units data and populate the select2 dropdown
+            fetch(base_url+'apis/get_item_units?keyword='+input_purchase_unit)
+            .then(response => response.json())
+            .then(data => {
+                if(data.length>0){
+                    data.forEach(function(catt) {
+                        const option = new Option(catt.name, catt.id, true, true); 
+                        selectElementPurchaseUnit.append(option).trigger('change');
+                        selectElementPurchaseUnit.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                        document.getElementById("input_purchase_unit").value=$('#item_units_purchase').val();
+                    });
+                }else{
+                    console.log("Tidak Ada Data "+data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+
+            // Fetch the item warehouse data and populate the select2 dropdown
+            fetch(base_url+'apis/get_itemLocationByItemsId?keyword='+item_id)
+            .then(response => response.json())
+            .then(data => {
+                if(data.length>0){
+                    data.forEach(function(cat) {
+                        const option = new Option(cat.name, cat.id, true, true); 
+                        selectElementWarehouse.append(option).trigger('change');
+                        selectElementWarehouse.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                        document.getElementById("input_warehouse").value=$('#warehouse').val();
+                    });
+                }else{
+                    console.log("Tidak Ada Data "+data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+
+            // Fetch the item price data and populate the sell price input field
+            fetch(base_url+'apis/get_itemPrice?keyword='+item_id)
+            .then(response => response.json())
+            .then(data => {
+                if(data.length>0){
+                    data.forEach(function(cat) {
+                        console.log(typeof cat.sell_price);
+                        const price = parseFloat(cat.sell_price);
+                        console.log(typeof price);
+                        console.log(price);
+                        document.getElementById("sell_price").value=numberFormat(price.toString());
+                    });
+                }else{
+                    console.log("Tidak Ada Data "+data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+
+            let items_id = document.getElementById("item_id").value;
+            fetch(base_url+'apis/get_supplier_byitem?keyword='+items_id)
+            .then(response => response.json())
+            .then(data => {
+                if(data.length>0){
+                    data.forEach(function(cat) {
+                        if(cat.id != null){
+                            const option = new Option(cat.name, cat.id, true, true); 
+                            selectElementSupplier.append(option).trigger('change');
+                            selectElementSupplier.trigger({
+                                type: 'select2:select',
+                                params: {
+                                    data: data
+                                }
+                            });
+                            document.getElementById("input_supplier").value=$('#item_supplier').val();
+                        }
+                    });
+                }else{
+                    console.log("Tidak Ada Data "+data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+    });
+});
