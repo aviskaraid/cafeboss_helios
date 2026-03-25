@@ -124,5 +124,7 @@ _modules/*
 
 /results/
 /phpunit*.xml
+
+# Hapus Template Assets & Node Modules
 /public/template/assets/
 /public/template/node_modules/

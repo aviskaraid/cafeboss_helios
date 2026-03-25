@@ -1,0 +1,34 @@
+name: CI CD Aviskara
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_public:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy To Public Directory Cafeboss
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ftp.aviskara.id
+          username: ${{ secrets.FTP_PUBLIC_USERNAME }}
+          password: ${{ secrets.FTP_PUBLIC_PASSWORD }}
+          local-dir: ./public/ 
+          #server-dir: /public_html/ # Target directory on your server
+  deploy_core:
+    needs: [deploy_public]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy To Core Directory Cafe Boss
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ftp.aviskara.id
+          username: ${{ secrets.FTP_CORE_USERNAME }}
+          password: ${{ secrets.FTP_CORE_PASSWORD }}
+          paths-ignore:
+            - './public/**'
+          #server-dir: /public_html/ # Target directory on your server
