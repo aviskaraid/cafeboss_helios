@@ -19,7 +19,8 @@ jobs:
           local-dir: ./public/ 
           #server-dir: /public_html/ # Target directory on your server
   deploy_core:
-    needs: [deploy_public]
+    needs: 
+      - deploy_public
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
