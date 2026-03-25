@@ -124,3 +124,5 @@ _modules/*
 
 /results/
 /phpunit*.xml
+/public/template/assets/
+/public/template/node_modules/
