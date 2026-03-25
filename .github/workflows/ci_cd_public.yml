@@ -32,5 +32,5 @@ jobs:
           username: ${{ secrets.FTP_CORE_USERNAME }}
           password: ${{ secrets.FTP_CORE_PASSWORD }}
           exclude: |
-            **./public*
+            **./public/**
           #server-dir: /public_html/ # Target directory on your server
