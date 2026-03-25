@@ -31,7 +31,6 @@ jobs:
           server: ftp.aviskara.id
           username: ${{ secrets.FTP_CORE_USERNAME }}
           password: ${{ secrets.FTP_CORE_PASSWORD }}
-          paths:
-            exclude:
-            - ./public/*
+          exclude: |
+            **/public/*
           #server-dir: /public_html/ # Target directory on your server
