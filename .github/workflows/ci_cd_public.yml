@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  deploy_public:
+  deploypublic:
+    name: Deploy To Public
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,10 +19,10 @@ jobs:
           password: ${{ secrets.FTP_PUBLIC_PASSWORD }}
           local-dir: ./public/ 
           #server-dir: /public_html/ # Target directory on your server
-  deploy_core:
-    needs: 
-      - deploy_public
+  deploycore:
+    name: Deploy to Core
     runs-on: ubuntu-latest
+    needs: deploypublic
     steps:
       - uses: actions/checkout@v4
       - name: Deploy To Core Directory Cafe Boss
