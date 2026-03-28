@@ -110,56 +110,120 @@ class MainController extends BaseController
 
     public function inputTransaction(){
         $posTransaction = new PosTransactionsModel();
-        $posTransacionPayment = new PosTransactionsPaymentsModel();
+        $posTransactionPayment = new PosTransactionsPaymentsModel();
         $json = $this->request->getJSON();
-        $headers = [
-            "pos_id"            =>$json->pos_id,
-            "type"              =>"resto",
-            "shift"             =>$json->shift,
-            "sub_type"          =>($json->hold==true)?'dine_in':'take_away',
-            "payment_method"    =>$json->payment->payMethod,
-            "customer_id"       =>$json->customer->id,
-            "table_id"          =>$json->table->id,
-            "sequence"          =>($json->hold==true)?0:getSequenceTransac($json->pos_id),
-            "transaction_date"  =>$json->start_time,
-            "ref_no"            =>$json->ref_no,
-            "disc_type"         =>"percentage",
-            "disc_amount"       =>$json->discount,
-        ];
-        $posTransaction->save($headers);
-        $salesId = $posTransaction->getInsertID();
-        $payment = [
-            "transaction_id"    =>$salesId,
-            "business_id"       =>$json->store->business_id,
-            "amount"            =>$json->payment->amount,
-            "method"            =>$json->payment->payMethod,
-            "payment_type"      =>$json->payment->payMethod,
-            "bank_account_number"   => $json->payment->account_name." : ".$json->payment->account_number,
-            "transaction_no"        => ($json->payment->account_name=="")?"":$json->payment->account_trans_number,
-            "paid_on"               => ($json->hold==true)?null:date('Y-m-d H:i:s'),
-            "note"                  => "",
-        ];
-        $posTransacionPayment->save($headers);
-        $paymentId = $posTransacionPayment->getInsertID();
-        $lines = [];
-        foreach ($json->items as $key) {
-            $dataItem = [
-                'transaction_id'            => $salesId,
-                'foodmenu_id'               => $key->foodmenuId,
-                'quantity'                  => $key->qty,
-                'sub_total'                 => floatval($key->price)*floatval($key->qty),
-                'total'                     => floatval($key->price)*floatval($key->qty),
-                'price'                     => $key->price,
+        $timestamp = strtotime($json->start_time);
+        $startTime = date('Y-m-d H:i:s', $timestamp);
+        $transaction_id = null;
+        if($json->transaction_id != null or $json->transaction_id != ""){
+            $transaction_id = $json->transaction_id;
+            $headers = [
+                "pos_id"            =>$json->pos_id,
+                "type"              =>"resto",
+                "shift"             =>$json->shift,
+                "store_id"          =>$json->store->id,
+                "status"            =>"final",
+                "sub_type"          =>'dine_in',
+                "payment_method"    =>$json->payment->payMethod,
+                "customer_id"       =>$json->customer->id,
+                "table_id"          =>$json->table->id,
+                "sequence"          =>getSequenceTransac($json->pos_id),
+                "transaction_date"  =>$json->start_time,
+                "ref_no"            =>$json->ref_no,
+                "disc_type"         =>"percentage",
+                "sub_total"         =>(float)$json->sub_total,
+                "total"             =>(float)$json->total,
+                "disc_amount"       =>(float)$json->discount
             ];
-            array_push($lines,$dataItem);
+            $posTransaction->update($transaction_id,$headers);
+            $payment = [
+                "business_id"       =>$json->store->business_id,
+                "amount"            =>$json->payment->amount,
+                "method"            =>$json->payment->payMethod,
+                "payment_type"      =>$json->payment->payMethod,
+                "bank_account_number"   => $json->payment->account_name." : ".$json->payment->account_number,
+                "transaction_no"        => ($json->payment->account_name=="")?"":$json->payment->account_trans_number,
+                "paid_on"               => date('Y-m-d H:i:s'),
+                "note"                  => "",
+            ];
+            $posTransactionPayment->where('transaction_id', $transaction_id);
+            $posTransactionPayment->update(null,$payment);
+            $lines = [];
+            foreach ($json->items as $key) {
+                $dataItem = [
+                    'transaction_id'            => $transaction_id,
+                    'foodmenu_id'               => $key->foodMenuId,
+                    'quantity'                  => $key->qty,
+                    'sub_total'                 => floatval($key->price)*floatval($key->qty),
+                    'total'                     => floatval($key->price)*floatval($key->qty),
+                    'price'                     => $key->price,
+                ];
+                // array_push($lines,$dataItem);
+                $detailSave = new PosTransactionsLinesModel();
+                $detailSave->where('transaction_id', $transaction_id);
+                $detailSave->where('foodmenu_id', $key->foodMenuId);
+                $detailSave->update(null,$dataItem);
+            }
+            $tbl = new TablesModel();
+            $reservationName = ($json->customer->username=="general")?"General":$json->customer->fullname;
+            $updates = ['reservation'=>0,'reservation_name'=>"",'transaction_id'=>0];
+            $tbl->update($json->table->id,$updates);
+            return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','data'=>$transaction_id]);
+        }else{
+            $headers = [
+                "pos_id"            =>$json->pos_id,
+                "type"              =>"resto",
+                "shift"             =>$json->shift,
+                "store_id"          =>$json->store->id,
+                "status"            =>($json->hold==true)?"hold":"final",
+                "sub_type"          =>($json->hold==true)?'dine_in':'take_away',
+                "payment_method"    =>$json->payment->payMethod,
+                "customer_id"       =>$json->customer->id,
+                "table_id"          =>$json->table->id,
+                "start"             =>$startTime,
+                "sequence"          =>($json->hold==true)?0:getSequenceTransac($json->pos_id),
+                "transaction_date"  =>$json->start_time,
+                "ref_no"            =>$json->ref_no,
+                "disc_type"         =>"percentage",
+                "sub_total"         =>(float)$json->sub_total,
+                "total"             =>(float)$json->total,
+                "disc_amount"       =>(float)$json->discount
+            ];
+            $posTransaction->save($headers);
+            $transactionId = $posTransaction->getInsertID();
+            $payment = [
+                "transaction_id"    =>$transactionId,
+                "business_id"       =>$json->store->business_id,
+                "amount"            =>0,
+                "method"            =>$json->payment->payMethod,
+                "payment_type"      =>$json->payment->payMethod,
+                "bank_account_number"   => $json->payment->account_name." : ".$json->payment->account_number,
+                "transaction_no"        => ($json->payment->account_name=="")?"":$json->payment->account_trans_number,
+                "paid_on"               => ($json->hold==true)?null:date('Y-m-d H:i:s'),
+                "note"                  => "",
+            ];
+            $posTransactionPayment->save($payment);
+            //$paymentId = $posTransacionPayment->getInsertID();
+            $lines = [];
+            foreach ($json->items as $key) {
+                $dataItem = [
+                    'transaction_id'            => $transactionId,
+                    'foodmenu_id'               => $key->foodMenuId,
+                    'quantity'                  => $key->qty,
+                    'sub_total'                 => floatval($key->price)*floatval($key->qty),
+                    'total'                     => floatval($key->price)*floatval($key->qty),
+                    'price'                     => $key->price,
+                ];
+                array_push($lines,$dataItem);
+            }
+            $detailSave = new PosTransactionsLinesModel();
+            $detailSave->insertBatch($lines);
+            $tbl = new TablesModel();
+            $reservationName = ($json->customer->username=="general")?"General":$json->customer->fullname;
+            $updates = ['reservation'=>1,'reservation_name'=>$reservationName,'transaction_id'=>$transactionId];
+            $tbl->update($json->table->id,$updates);
+            return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','data'=>$json]);
         }
-        $detailSave = new PosTransactionsLinesModel();
-        $detailSave->insertBatch($lines);
-        //$updatesTable = ['reservation'=>1,'reservation_name'=>$reservationName,'transaction_id'=>$transactionId];
-        //$tbl = new TablesModel();
-        //$tbl->update($json->table->id,$updatesTable);
-        return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','data'=>$json]);
-        
     }
 
     public function getProducts($id){
@@ -173,6 +237,21 @@ class MainController extends BaseController
         $data['store']     = $getBranch;
         $data['category']   = $getCat;
         $data['product']    = $getMenu;
+        return $this->response->setJSON($data);
+       
+    }
+
+    public function getProductsLines($id){
+        $branch = new PosTransactionsLinesModel();
+        $getProduct = $branch->getFoodMenuByLines($id);
+        $data['product']    = $getProduct;
+        return $this->response->setJSON($data);
+       
+    }
+    public function getMemberLines($id){
+        $branch = new PosTransactionsModel();
+        $getProduct = $branch->getMemberByLines($id);
+        $data['customer']    = $getProduct;
         return $this->response->setJSON($data);
        
     }

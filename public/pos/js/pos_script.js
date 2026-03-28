@@ -13,7 +13,8 @@
       listofTable:[],
       listofStore:[],
       listOfMember:[],
-
+      item_transaction_id:null,
+      item_transaction:{},
       //Setup Store//
       store_setup:null,
       take_away :"1",
@@ -168,7 +169,7 @@
         this.receiptNo = null;
         this.receiptDate = null;
         this.updateChange();
-        this.clearSound();
+        //this.clearSound();
         this.member = {};
         this.table = {};
         this.amount = 0;
@@ -182,6 +183,22 @@
         this.isPayCash=true;
         this.pay_refNumber=null;
         this.pay_note=null;
+      },
+      beep() {
+        this.playSound("sound/beep-29.mp3");
+      },
+      clearSound() {
+        this.playSound("sound/button-21.mp3");
+      },
+      clearDiscount() {
+        this.disc = 0;
+        this.updateChange();
+      },
+      playSound(src) {
+        const sound = new Audio();
+        sound.src = src;
+        sound.play();
+        sound.onended = () => delete(sound);
       },
       chooseMenu(type) {
         if(type=="table"){
@@ -311,6 +328,7 @@
       },
       initialData(){
         if(getCookie('session_pos')!== null){
+          console.log("Shift Exist "+this.shift);
             this.store = JSON.parse(getCookie('store'));
             this.openingbalance = getCookie('amount_opening');
             this.user = JSON.parse(getCookie('user'));
@@ -330,7 +348,6 @@
             this.params_store={};
             this.params_balance=0;
             this.params_shift=0;
-            console.log(this.submitHoldOrder());
             this.loadTablePos();
             this.getTransactionPending();
         }
@@ -404,27 +421,61 @@
         this.params_shift = getShift;
       },
       chooseTable(element,table){
-        if(table.sales!==null){
-          Swal.fire({
-                  title: 'Meja ini tidak bisa digunakan!',
-                  text: "Silahkan pilih meja yang lain",
-                  icon: 'warning',
-                  showCancelButton: false,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'CLOSE'
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                  }
-                });
+        if(table.pos_transaction!==null){
+          this.table = table;
+          this.item_transaction = table.pos_transaction;
+          this.item_transaction_id = table.pos_transaction.id;
+          // Swal.fire({
+          //         title: 'Meja ini tidak bisa digunakan!',
+          //         text: "Silahkan pilih meja yang lain",
+          //         icon: 'warning',
+          //         showCancelButton: false,
+          //         confirmButtonColor: '#3085d6',
+          //         cancelButtonColor: '#d33',
+          //         confirmButtonText: 'CLOSE'
+          //       }).then((result) => {
+          //         if (result.isConfirmed) {
+          //         }
+          //       });
+           this.cart = [];
+          this.getDataMemberLines(table.pos_transaction.id);
+          this.getDataProductsLines(table.pos_transaction.id);
+          this.pilih_table = table;
+          this.chooseMenu("pos");
+          console.log("CLICK TABLE "+JSON.stringify(table));
         }else{
           this.pilih_table = table;
           this.chooseMenu("pos");
           console.log("CLICK TABLE "+JSON.stringify(table));
         }
       },
+      
       // optionsSelect//
-
+      async getDataMemberLines($id) {
+        const endpoint = 'http://localhost:8080/posmain/getMemberLines/'+$id; // Or any other specific endpoint
+        const fullURL = `${endpoint}`;
+        const response = await fetch(fullURL);
+        const data = await response.json();
+        this.member = data.customer;
+       
+      },
+      async getDataProductsLines($id) {
+        const endpoint = 'http://localhost:8080/posmain/getProductsLines/'+$id; // Or any other specific endpoint
+        const fullURL = `${endpoint}`;
+        const response = await fetch(fullURL);
+        const data = await response.json();
+        for await (const foodMenu of data.product) {
+           this.cart.push({
+            foodMenuId: foodMenu.id,
+            image: foodMenu.picture,
+            name: foodMenu.name,
+            price: foodMenu.sell_price,
+            option: "",
+            category:foodMenu.category_id,
+            qty: parseFloat(foodMenu.quantity)
+          });
+        }
+      },
       //OpeningForm//
       openingStoreList(){
         return this.listofStore;
@@ -528,9 +579,7 @@
               this.firstBalance = false;
               this.existShift = true;
             }else{
-              console.log("data.data ===null");
               if(Object.keys(this.params_store).length > 0 && this.params_balance > 0 && this.params_shift > 0){
-                console.log("data.data ===null existshift true");
                 const currentDate = getBaseDate();
                 this.exist_startTime = currentDate;
                 this.exist_sessionPos = crypto.randomUUID();
@@ -563,7 +612,6 @@
                       }
                   });
               }else{
-                console.log("data.data ===null existshift false");
                 this.firstBalance = true;
                 this.existShift = false;
               }
@@ -578,7 +626,7 @@
         try {
           const myData = {
                 location_id: JSON.parse(getCookie('store')).id,
-                status:"pending"
+                status:"hold"
               };
           const csrfToken = document.querySelector('meta[name="X-CSRF-TOKEN"]').getAttribute('content');
           const response = await fetch('http://localhost:8080/widget/pending_transaction', {
@@ -597,7 +645,11 @@
 
           const data = await response.json();
           if(data.status === "success"){
+            if(this.transaction_pending.length > 0){
+              this.transaction_pending = [];
+            }
             if(data.data !== null){
+              console.log("Transaction Pending ada ");
               this.transaction_pending = data.data;
             }else{
 
@@ -721,14 +773,7 @@
         const data = await response.json();
         this.products = data.product;
         this.category = data.category;
-        for (let product of data.product) {
-          await this.db.addProduct(product);
-        }
-        for (let cat of data.category) {
-          await this.db.addCategory(cat);
-        }
-          await this.loadProducts();
-          this.loadTablePos();
+        this.loadTablePos();
       },
       async reUpdateProducts() {
         const storeId = this.store.id;
@@ -738,24 +783,12 @@
         const data = await response.json();
         this.products = data.product;
         this.category = data.category;
-        console.log("REUPDATE PRODUCTS "+JSON.stringify(this.products));
         this.loadTablePos();
-        // for (let update of data.category) {
-        //   await this.db.editCategory(update);
-        //   console.log("update category "+JSON.stringify(update));
-        // }
-        // for (let update of data.product) {
-        //   await this.db.editProduct(update);
-        //   console.log("update product "+JSON.stringify(update));
-        // }
-          //await this.loadProducts();
-          console.log("REUPDATE");
-          this.initialData();
+        this.initialData();
       },
       async submitransaction() {
         const getPayment ={
             payMethod:this.payMethod,
-            subtotal:this.subTotal,
             amount:this.amount,
             change:this.change,
             account_name:this.account_name,
@@ -765,6 +798,7 @@
         }
         try {
           const myData = {
+              transaction_id:this.item_transaction_id,
               pos_id:this.pos_id,
               start_time: getBaseDate(),
               hold:this.holdOrder,
@@ -774,6 +808,8 @@
               customer:this.member,
               items:this.cart,
               discount:this.disc,
+              sub_total:this.subTotal,
+              total:this.getTotalPrice(),
               shift:this.shift,
               ref_no:this.receiptNo,
               session:getCookie('session_pos'),
@@ -797,6 +833,8 @@
             if(data.status === "success"){
               this.clear();
               this.initialData();
+              this.closeHPForm();
+              this.chooseMenu("table");
             }else{
               Swal.fire({
                   title: 'Terjadi masalah dengan system',

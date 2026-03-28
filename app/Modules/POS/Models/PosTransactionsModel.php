@@ -14,8 +14,8 @@ class PosTransactionsModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["pos_id","type","sub_type","remark","payment_method","customer_id",
-                                "table_id","sequence","transaction_date","ref_no","disc_type","disc_amount",
+    protected $allowedFields = ["pos_id","type","start","end","shift","sub_type","status","store_id","remark","payment_method","customer_id",
+                                "table_id","sequence","transaction_date","customer_id","ref_no","disc_type","sub_total","total","disc_amount",
                                 "tax_id","tax_amount","tax_id","tax_amount","created_by",
                                 "updated_by","deleted_by"];
 
@@ -88,6 +88,20 @@ class PosTransactionsModel extends Model
         }
         
         $result = $builder->get()->getResult();
+        return $result;
+    }
+
+    public function getMemberByLines($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('customers');
+        $builder->select('customers.*,
+        a.id as transaction_id');
+        $builder->join('pos_transactions a', 'a.customer_id = customers.id');
+        if($keyword != '') {
+            $builder->where('a.id', $keyword);
+        }
+        $builder->groupBy("customers.id");
+        $result = $builder->get()->getRow();
         return $result;
     }
 }

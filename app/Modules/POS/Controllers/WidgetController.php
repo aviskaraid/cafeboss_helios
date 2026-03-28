@@ -13,7 +13,7 @@ class WidgetController extends BaseController{
         $json = $this->request->getJSON();
         $widget = new WidgetModel();
         $data = $widget->getTransactionPendingBranch($json->location_id,$json->status);
-        return $this->response->setJSON(['status' => 'success', 'message' => 'data Tidak ada','data'=>$data]);
+        return $this->response->setJSON(['status' => 'success', 'message' => 'data','data'=>$data]);
     }
    
 }

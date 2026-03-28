@@ -127,7 +127,7 @@
                     <div x-show="filteredTables().length" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4">
                         <template x-for="tbl in filteredTables()" :key="tbl.id">
                         <div role="button"
-                            :class="tbl.sales!==null?'rounded-xl shadow-lg bg-pink-200 py-2 mb-3 hover:bg-pink-400 hover:text-white focus:outline-none':
+                            :class="tbl.pos_transaction!==null?'rounded-xl shadow-lg bg-pink-200 py-2 mb-3 hover:bg-pink-400 hover:text-white focus:outline-none':
                             'rounded-xl shadow-lg bg-cyan-200 py-2 mb-3 hover:bg-cyan-400 hover:text-white focus:outline-none'"
                             :title="tbl.description"
                             x-on:click="chooseTable(this,tbl)">
@@ -136,12 +136,12 @@
                                     <p class="nowrap text-lg font-medium" x-text="tbl.description"></p>
                                 </div>
                                 <div class="flex text-right pr-2">
-                                    <p class="nowrap text-base" x-text="tbl.sales!==null?getTimer(tbl.pos_transaction.start):'00:00'"></p>
+                                    <p class="nowrap text-base" x-text="tbl.pos_transaction!==null?getTimer(tbl.pos_transaction.start):'00:00'"></p>
                                 </div>
                             </div>
                             <div class="flex justify-center font-semibold mt-4">
                                 <div class="flex items-center">
-                                    <p class="nowrap text-lg" x-text="tbl.sales!==null?tbl.reservation_name:'Free'"></p>
+                                    <p class="nowrap text-lg" x-text="tbl.pos_transaction!==null?tbl.reservation_name:'Free'"></p>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center font-semibold mt-4">
@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="flex text-right pr-2">
                                     <p class="nowrap text-base">T: </p>
-                                    <p class="nowrap text-base" x-text="tbl.sales!==null?priceFormat(tbl.sales.total_before_tax):'0'">Rp. 3.000.000</p>
+                                    <p class="nowrap text-base" x-text="tbl.pos_transaction!==null?priceFormat(tbl.pos_transaction.sub_total):'0'">Rp. 3.000.000</p>
                                 </div>
                             </div>          
                         </template>
@@ -267,7 +267,7 @@
             </div>
             <!-- end Col 1 -->
 
-            <!-- sart Col 1 -->
+            <!-- start Col 2 -->
             <div class="flex-grow overflow-y-auto bg-gray-100 col-span-2 p-2 rounded-2xl">
                 <div class="flex flex-col h-full pr-2 pl-2">
                     <div class="bg-white rounded-2xl flex flex-col h-full shadow">
@@ -374,9 +374,62 @@
                     </div>
                     <!-- end Payment Info -->
                     </div>
-                </div>    
-            </div>
+            </div>    
             <!-- end Col 2 -->
+            <!-- start Col 3 -->
+            <div class="flex-grow overflow-y-auto bg-gray-100 p-2 rounded-2xl">
+            <div class="flex justify-between items-center text-lg font-semibold">
+                <div class="flex-grow text-center text-base text-cyan-600">
+                    <div x-data="{ time: '', date: '', week: ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'], 
+                                    startClock() {
+                                        setInterval(() => {
+                                            this.updateClock();
+                                        }, 1000);
+                                    },
+                                    updateClock() {
+                                        let newDate = new Date();
+                                        this.time = this.padNum(newDate.getHours(), 2) + ':' + 
+                                                    this.padNum(newDate.getMinutes(), 2) + ':' + 
+                                                    this.padNum(newDate.getSeconds(), 2);
+                                        this.date = this.padNum(newDate.getFullYear(), 4) + '-' + 
+                                                    this.padNum(newDate.getMonth() + 1, 2) + '-' + 
+                                                    this.padNum(newDate.getDate(), 2) + ' | ' + 
+                                                    this.week[newDate.getDay()];
+                                    },
+                                    padNum(num, digit) {
+                                        let zero = '';
+                                        for (let i = 0; i < digit; i++) {
+                                            zero += '0';
+                                        }
+                                        return (zero + num).slice(-digit);
+                                    }
+                                }" x-init="updateClock(); startClock()">
+                        <h1 x-text="time"></h1>
+                        <p x-text="date"></p>
+                    </div>
+                    <hr class="my-2">
+                    <div class="bg-cyan-200 text-white rounded-xl">Pending List</div>
+                    <hr class="my-2">
+                    <template x-for="mbr in transaction_pending" :key="mbr.id">
+                        <div role="button"
+                        :class="'rounded-xl shadow-lg bg-pink-200 py-2 mb-3 hover:bg-pink-400 hover:text-white text-black focus:outline-none'"
+                        :title="mbr.name"
+                        x-on:click="chooseTable(this,mbr)">
+                        <div class="flex-grow text-center text-sm">
+                        <div x-text="mbr.name" class="mb-4"></div>
+                        <div class="flex justify-between items-center text-sm font-semibold pr-2 pl-2">
+                            <div class="flex-grow text-left" x-text="getTimer(mbr.pos_transaction.start)"></div>
+                            <div class="flex text-right" x-text="priceFormat(mbr.pos_transaction.sub_total)"></div>
+                        </div>
+                    </div>
+                    </div>
+                    </template>
+                </div>
+            </div>
+                <!-- end Col 3 -->
+            </div>
+            <!-- end Col 3 -->
+        </div>
         </div>
         <div x-show="firstBalance" 
             class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>

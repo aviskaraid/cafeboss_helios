@@ -123,8 +123,9 @@ class AppsModel extends Model
         $db = \Config\Database::connect();
         $childBuilder = $db->table('pos_transactions'); // Specify the other table
         $childBuilder->where("table_id",$value['id']);
+        $childBuilder->where("status","hold");
         $getPosTrans = $childBuilder->get()->getRow();
-        $value['sales'] = $getPosTrans;
+        $value['pos_transaction'] = $getPosTrans;
         }
         return $result;
     }

@@ -14,8 +14,8 @@ class TablesModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["area_id","name","description","type","person",
-                                "spesificaion","reservation","reservation_name","open_at",
+    protected $allowedFields = ["area_id","name","description","type","person","transaction_id",
+                                "spesification","reservation","reservation_name","open_at",
                                 "close_at"];
 
     // Dates

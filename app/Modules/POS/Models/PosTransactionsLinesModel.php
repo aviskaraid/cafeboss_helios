@@ -89,4 +89,34 @@ class PosTransactionsLinesModel extends Model
         $result = $builder->get()->getResult();
         return $result;
     }
+
+    public function getFoodMenuByLines($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('foodmenu');
+        $builder->select('foodmenu.*,
+        a.category_id as category_id,c.quantity as quantity');
+        $builder->join('foodmenu_category_map a', 'a.foodmenu_id = foodmenu.id');
+        $builder->join('store_category_map b', 'b.category_id = a.category_id');
+        $builder->join('pos_transactions_lines c', 'c.foodmenu_id = foodmenu.id');
+        if($keyword != '') {
+            $builder->where('c.transaction_id', $keyword);
+        }
+        $builder->groupBy("foodmenu.id");
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
+    public function getMemberByLines($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('customers');
+        $builder->select('customers.*,
+        a.id as transaction_id');
+        $builder->join('pos_transactions_lines a', 'a.foodmenu_id = foodmenu.id');
+        if($keyword != '') {
+            $builder->where('c.transaction_id', $keyword);
+        }
+        $builder->groupBy("foodmenu.id");
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
 }
