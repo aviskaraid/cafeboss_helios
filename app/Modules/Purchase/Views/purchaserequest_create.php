@@ -28,11 +28,15 @@
                 <form id="purchaserequest_form" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="row">
-                       <div class="col-12 col-md-4 col-lg-4">
-                      <div class="mb-3">
-                        <label>Ref ID (Generate)</label>
-                          <input type="text" class="form-control d-inline-block w-75" placeholder="Ref No" name="ref_no" value="<?= $generate_code ?>" id="ref_no" readonly>
-                      </div>
+                      <div class="col-12 col-md-4 col-lg-4">
+                        <div class="mb-3">
+                          <label>Ref Code (Generate)</label>
+                            <input type="text" class="form-control d-inline-block w-75" placeholder="Ref No" name="ref_code" value="<?= $generate_code ?>" id="ref_code" readonly>
+                        </div>
+                        <div class="form-group">
+                          <label>Ref No*</label>
+                          <input type="text" name="ref_no" id="ref_no" class="form-control" autocomplete="off">
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -40,6 +44,7 @@
                           <label>Get Stock Request ID </label>
                           <input type="hidden" name="request_id" id="request_id">
                           <input type="hidden" name="now_date" id="now_date" value="<?= getDateNow() ?>">
+                          <input type="text" name="raw_sr" id="raw_sr"> 
                           <select class="stock_request form-control " id="stock_request" name="stock_request">
                           </select>
                         </div>

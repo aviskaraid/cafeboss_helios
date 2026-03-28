@@ -8,7 +8,8 @@
 <style>.disabled {
   pointer-events: none;
   cursor: default;
-}</style>
+}
+</style>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -43,6 +44,7 @@
                   <div class="col-sm-12 col-md-6 col-lg-6">
                     <div class="float-right">
                       <div class="d-flex form-group m-0">
+                        <input type="hidden" id="total_data" value="<?= count($purchaseorder)?>">
                         <input type="text" name="keyword" class="form-control form-control-sm" value="<?=$request->getGet('keyword')?>" placeholder="Name or Description Find ">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                       </div>
@@ -58,10 +60,10 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>PO ID</th>
                   <th>Date</th>
-                  <th>Ref No</th>
-                  <th>Line Number</th>
+                  <th>Ref</th>
+                  <th>Requester</th>
+                  <th>Approval</th>
                   <th>Status</th>
                   <th></th>
                 </tr>
@@ -73,13 +75,36 @@
                 foreach ($purchaseorder as $key => $value) : ?>
                   <tr>
                     <td><?=$no++?></td>
-                    <td><?=content_wrap($value['id'],20)?></td>
-                    <td><?=content_wrap($value['transaction_date'],20)?></td>
-                    <td><?=content_wrap($value['ref_no'],20)?></td>
-                    <td><?=content_wrap($value['line_item_number'],20)?></td>
-                    <td><?=content_wrap($value['status'],20)?></td>
-                    <td class="text-center" style="width:30%">
-                      <a href="<?=site_url('puchase/purchaseorder/'.$value['id'])?>" class="btn btn-warning btn-sm <?= (($value['id']==1 && isSuperAdmin()) || ($value['id']!=1 && (isAdminApps()||isSuperAdmin())))?"":"disabled"; ?>" title="Approval"><i class="fas fa-pencil-alt"></i>Approval</a>
+                    <td style="width:13%"><?=content_wrap($value['transaction_date'],14)?></td>
+                    <td style="width: 12%;"><a href="<?=site_url('purchase/purchaseorder/'.$value['id'])?>" title="Edit Data" class="font-weight-bold"><?=content_wrap($value['ref_code'],20)?> || <?=content_wrap($value['ref_no'],20)?></td>
+                    <td><?=content_wrap($value['requester_name'],20)?></td>
+                     <td> <?= ($value['approval_name'] != null) ? content_wrap($value['approval_name'],20) : ''?>
+                    </td>
+                    <td>
+                     <?php if ($value['status'] =='New' or $value['status'] =='Pending'): ?>
+                      <button class="btn btn-outline-success" id="no_cursor"><?= $value['status'] ?></button>
+                      <?php elseif ($value['status'] =='Processing'): ?>
+                        <button class="btn btn-outline-danger"><i class="fas fa-refresh"></i> Proses</a></button>
+                      <?php elseif ($value['status'] =='Canceled'): ?>
+                        <button class="btn btn-outline-danger"><i class="fas fa-cross"></i> Cancel</a></button>
+                      <?php else:?>
+                          <button class="btn btn-outline-info" id="no_cursor"><i class="fas fa-check"></i> Approved</span></button>
+                      <?php endif; ?>  
+                      </td>
+                    <td>
+                      <?php if ($value['status'] =='New' or $value['status'] =='Pending'): ?>
+                        <button class ="btn btn-md btn-outline-warning text-warning" id="btn_pending" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Pending</button>
+                        <button class ="btn btn-md btn-outline-primary text-dark" id="btn_approved" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Approve</button>
+                        <button class ="btn btn-md btn-outline-danger text-danger" id="btn_declined" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Declined</button>
+                       <?php elseif ($value['status'] =='Processing'): ?>
+                        <span class="badge bg-danger text-white"><i class="fas fa-trash"></i> Proses</a>
+                      <?php elseif ($value['status'] =='Canceled'): ?>
+                        <span class="badge bg-danger text-white"><i class="fas fa-ban"></i> Canceled</a>
+                      <?php elseif ($value['status'] =='Approved'): ?>
+                        <span class="badge bg-primary text-white"><i class="fas fa-check"></i> Approved</a>
+                      <?php else:?>
+                        <span class="badge bg-info text-white"><i class="fas fa-box"></i> Good Receive</a>
+                      <?php endif; ?>
                     </td>
                   </tr>
                 <?php endforeach; ?>
@@ -98,4 +123,6 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('jsScript') ?>
+<script src="<?=base_url()?>template/frequently/js/purchaseorder.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?= $this->endSection() ?>

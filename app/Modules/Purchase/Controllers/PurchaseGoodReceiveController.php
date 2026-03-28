@@ -16,4 +16,10 @@ class PurchaseGoodReceiveController extends BaseController
         $data['title'] = "Purchase Good Receive";
         return hmvcView($this->module, 'purchasegoodreceive_list', $data);
     }
+    public function create(){
+        $data['generate_code'] = becko_purchase_goodreceive_code(8,true);
+        $data['transaction_date'] = date("Y-m-d");
+        $data['title'] = "Good Receive New";
+        return hmvcView($this->module, 'purchasegoodreceive_create', $data);
+    }
 }

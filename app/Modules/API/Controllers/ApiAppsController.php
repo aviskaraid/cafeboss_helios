@@ -156,6 +156,7 @@ class ApiAppsController extends BaseController{
         return $this->response->setJSON($getCat);
     }
 
+
     public function getPosTableArea(){
         $keyword = $this->request->getGet('keyword');
         $apis = new AppsModel();
@@ -245,6 +246,13 @@ class ApiAppsController extends BaseController{
         return $this->response->setJSON($getCat);
     }
 
+    public function get_TaktikalById(){
+        $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $getCat = $apis->getTaktikalById($keyword);
+        return $this->response->setJSON($getCat);
+    }
+
     public function get_PurchaseRequestHeader(){
         $keyword = $this->request->getGet('keyword');
         $apis = new AppsModel();
@@ -278,6 +286,45 @@ class ApiAppsController extends BaseController{
         return $this->response->setJSON($getPR);
     }
 
+    public function get_PurchaseOrderHeader(){
+        $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $getCat = $apis->getPurchaseOrderHeader($keyword);
+        return $this->response->setJSON($getCat);
+    }
+
+    public function get_PurchaseOrderLines(){
+       $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $getPR = $apis->getPurchaseOrder($keyword);
+        if($this->request->getGet('warehouse')!==null){
+            $warehouse = $this->request->getGet('warehouse');
+            if($warehouse === 'null'){
+                $selected = $this->request->getGet('selected');
+                if($selected === 'null'){
+                    $getPR = $apis->getPurchaseOrder($keyword,null,null);
+                }else{
+                    $getPR = $apis->getPurchaseOrder($keyword,null, $selected);
+                }
+            }else{
+                $selected = $this->request->getGet('selected');
+                if($selected === 'null'){
+                    $getPR = $apis->getPurchaseOrder($keyword,$warehouse,null);
+                }else{
+                    $getPR = $apis->getPurchaseOrder($keyword,$warehouse,$selected); 
+                }
+            }
+        }
+        return $this->response->setJSON($getPR);
+    }
+
+    public function post_updatePendingSR(){
+        $keyword = $this->request->getJSON(true);
+        $apis = new AppsModel();
+        $res = $apis->post_updatePending_SR($keyword['id']);
+        return $this->response->setJSON($res);
+    }
+
     public function post_updateApproveSR(){
         $keyword = $this->request->getJSON(true);
         $apis = new AppsModel();
@@ -289,6 +336,13 @@ class ApiAppsController extends BaseController{
         $keyword = $this->request->getJSON(true);
         $apis = new AppsModel();
         $res = $apis->post_updateDecline_SR($keyword['id']);
+        return $this->response->setJSON($res);
+    }
+
+    public function post_updatePendingPR(){
+        $keyword = $this->request->getJSON(true);
+        $apis = new AppsModel();
+        $res = $apis->post_updatePending_PR($keyword['id']);
         return $this->response->setJSON($res);
     }
 
@@ -306,10 +360,38 @@ class ApiAppsController extends BaseController{
         return $this->response->setJSON($res);
     }
 
+    public function post_updatePendingPO(){
+        $keyword = $this->request->getJSON(true);
+        $apis = new AppsModel();
+        $res = $apis->post_updatePending_PO($keyword['id']);
+        return $this->response->setJSON($res);
+    }
+
+    public function post_updateApprovePO(){
+        $keyword = $this->request->getJSON(true);
+        $apis = new AppsModel();
+        $res = $apis->post_updateApprove_PO($keyword['id']);
+        return $this->response->setJSON($res);
+    }
+
+    public function post_updateDeclinePO(){
+        $keyword = $this->request->getJSON(true);
+        $apis = new AppsModel();
+        $res = $apis->post_updateDecline_PO($keyword['id']);
+        return $this->response->setJSON($res);
+    }
+
     public function post_removePRItem(){
         $keyword = $this->request->getGet('keyword');
         $apis = new AppsModel();
         $res = $apis->post_remove_item_PR($keyword);
+        return $this->response->setJSON($res);
+    }
+
+    public function post_removePOItem(){
+        $keyword = $this->request->getGet('keyword');
+        $apis = new AppsModel();
+        $res = $apis->post_remove_item_PO($keyword);
         return $this->response->setJSON($res);
     }
 

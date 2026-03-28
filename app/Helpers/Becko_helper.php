@@ -255,7 +255,7 @@ if (!function_exists('becko_stock_request_code')) {
             $prefix = "SR";
             $code = $prefix."-".$gets;
             $builder = $db->table('stock_request');
-            $builder->where('ref_no', $code);
+            $builder->where('ref_code', $code);
             if($builder->countAllResults()>0){
                 continue;
             }else{
@@ -275,7 +275,7 @@ if (!function_exists('becko_purchase_request_code')) {
             $prefix = "PR";
             $code = $prefix."-".$gets;
             $builder = $db->table('purchase_request');
-            $builder->where('ref_no', $code);
+            $builder->where('ref_code', $code);
             if($builder->countAllResults()>0){
                 continue;
             }else{
@@ -296,7 +296,27 @@ if (!function_exists('becko_purchase_order_code')) {
             $prefix = "PO";
             $code = $prefix."-".$gets;
             $builder = $db->table('purchase_order');
-            $builder->where('ref_no', $code);
+            $builder->where('ref_code', $code);
+            if($builder->countAllResults()>0){
+                continue;
+            }else{
+                break;
+            }
+        }
+        return $code;
+    }
+}
+
+if (!function_exists('becko_purchase_goodreceive_code')) {
+    function becko_purchase_goodreceive_code(int $length = 10, bool $capitalize = false){
+        $db = \Config\Database::connect();
+        $code = "";
+        for ($i=0; $i <20 ; $i++) { 
+            $gets = generateRandomString($length,$capitalize);
+            $prefix = "GR";
+            $code = $prefix."-".$gets;
+            $builder = $db->table('purchase_good_receive');
+            $builder->where('ref_code', $code);
             if($builder->countAllResults()>0){
                 continue;
             }else{

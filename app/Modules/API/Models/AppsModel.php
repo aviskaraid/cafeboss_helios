@@ -261,6 +261,7 @@ class AppsModel extends Model
         return $query->getResult();
     }
 
+
     public function getStore($keyword = null) {
         $db = \Config\Database::connect();
         $builder = $db->table('stores');
@@ -494,7 +495,7 @@ class AppsModel extends Model
     public function getStockRequestHeader($keyword = null) {
         $db = \Config\Database::connect();
         $builder = $db->table('stock_request a');
-        $builder->where('a.status', "approved");
+        $builder->where('a.status', "Approved");
         $builder->where('a.closed', 0);
         if($keyword != '') {
             $builder->where('a.id', $keyword);
@@ -518,7 +519,7 @@ class AppsModel extends Model
         z.id as item_id,d.id as item_id_stock,z.name as item_name,
         z.code as item_code,z.sku as item_sku,z.description as item_description,
         z.category_id as item_category_id,
-        f.description as main_unit,
+        d.stock_qty as stock_on_hand,f.description as main_unit, e.purchase_price,e.purchase_price_tax,e.hpp,
         g.supplier_id as supplier_id, h.name as suppplier_name,a.selected as selected");
         if($selected != '') {
             $builder->where('a.selected', 0);
@@ -546,11 +547,22 @@ class AppsModel extends Model
         $result = $builder->get()->getResultArray();
         return $result;
     }
+
+    public function getTaktikalById($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('taktikal a');
+        $builder->select("a.*,b.name as supplier_name");
+        $builder->join("supplier b","b.id = a.supplier_id");
+        $builder->where('a.active', 1);
+        $builder->where('a.id', $keyword);       
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
     public function getPurchaseRequestHeader($keyword = null) {
         $db = \Config\Database::connect();
         $builder = $db->table('purchase_request a');
-        $builder->where('a.status', "approved");
-        $builder->where('a.po_selected', 0);
+        $builder->where('a.status', "Approved");
+        $builder->where('a.closed', 0);
         if($keyword != '') {
             $builder->where('a.id', $keyword);
             
@@ -566,7 +578,7 @@ class AppsModel extends Model
         $builder->join("warehouse c","c.id = b.warehouse_id");
         $builder->join("item_stock d","d.item_id = z.id and d.warehouse_id = c.id","left");
         $builder->join("item_price e","e.item_id = z.id and e.warehouse_id = c.id","left");
-        $builder->join("units f","f.id = z.main_unit","left");
+        $builder->join("units f","f.id = z.purchase_unit","left");
         $builder->join("item_supplier_map g","g.item_id = a.item_id","left");
         $builder->join("supplier h","h.id = g.supplier_id","left");
         $builder->select("a.id as index_id, a.deleted, a.sr_line_id,a.transaction_id, a.par_stock as par_stock, a.stock_on_hand , a. request_stock,
@@ -593,6 +605,53 @@ class AppsModel extends Model
         return $result;
     }
 
+    public function getPurchaseOrderHeader($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('purchase_order a');
+        $builder->where('a.status', "Approved");
+        $builder->where('a.closed', 0);
+        if($keyword != '') {
+            $builder->where('a.id', $keyword);
+            
+        }
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+    public function getPurchaseOrder($keyword = null, $warehouse = null, $selected = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('purchase_order_lines a');
+        $builder->join("items z","z.id = a.item_id");
+        $builder->join("item_location b","b.item_id = a.item_id and b.warehouse_id = a.warehouse_id");
+        $builder->join("warehouse c","c.id = b.warehouse_id");
+        $builder->join("item_stock d","d.item_id = z.id and d.warehouse_id = c.id","left");
+        $builder->join("item_price e","e.item_id = z.id and e.warehouse_id = c.id","left");
+        $builder->join("units f","f.id = z.purchase_unit","left");
+        $builder->join("item_supplier_map g","g.item_id = a.item_id","left");
+        $builder->join("supplier h","h.id = g.supplier_id","left");
+        $builder->select("a.id as index_id, a.deleted, a.pr_line_id,a.transaction_id, a.par_stock as par_stock, a.stock_on_hand ,a.price,a.total_price,a.purchase_stock,
+        c.name as warehouse_name,c.id as warehouse_id,
+        z.alert_qty as par_stock,
+        z.id as item_id,d.id as item_id_stock,z.name as item_name,
+        z.code as item_code,z.sku as item_sku,z.description as item_description,
+        z.category_id as item_category_id,
+        d.stock_qty as stock_on_hand,f.description as main_unit, e.purchase_price,e.purchase_price_tax,e.hpp,
+        g.supplier_id as supplier_id, h.name as suppplier_name,a.selected as selected");
+        if($selected != '') {
+            $builder->where('a.selected', 0);
+        }
+        if($keyword != '') {
+            $builder->where('a.transaction_id', $keyword);
+            $builder->groupBy("a.item_id, a.warehouse_id");
+        }
+        if($keyword != '' && $warehouse != '') {
+            $builder->where('a.transaction_id', $keyword);
+            $builder->where('a.warehouse_id', $warehouse);
+            $builder->groupBy("a.item_id, a.warehouse_id, g.supplier_id");
+        }
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
+
 
 
     // update //
@@ -610,12 +669,34 @@ class AppsModel extends Model
         return $PRLines;
     }
 
+    public function post_remove_item_PO($keyword){
+        $part = explode("_",$keyword);
+        $id = $part[0];
+        $trans_id = $part[1];
+        $PRLines = $this->db->table("purchase_order_lines")
+                ->where('transaction_id',$trans_id) // Or $data['primaryKey']
+                ->where('id', $id)
+                ->set('deleted', 1)
+                ->set('updated_at', date('Y-m-d H:i:s'))
+                ->update();
+        return $PRLines;
+    }
+
+    public function post_updatePending_SR($itemId){
+         return $this->db->table("stock_request")
+                ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
+                ->set('approval_date', date('Y-m-d H:i:s'))
+                ->set('updated_at', date('Y-m-d H:i:s'))
+                ->set('status','Pending')
+                ->update();
+    }
+
     public function post_updateApprove_SR($itemId){
          return $this->db->table("stock_request")
                 ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
                 ->set('approval_date', date('Y-m-d H:i:s'))
                 ->set('updated_at', date('Y-m-d H:i:s'))
-                ->set('status','approved')
+                ->set('status','Approved')
                 ->set('approval_id', session()->get('user_login')->id)
                 ->update();
     }
@@ -625,8 +706,17 @@ class AppsModel extends Model
                 ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
                 ->set('approval_date', date('Y-m-d H:i:s'))
                 ->set('updated_at', date('Y-m-d H:i:s'))
-                ->set('status','declined')
+                ->set('status','Rejected')
                 ->set('approval_id', session()->get('user_login')->id)
+                ->update();
+    }
+
+    public function post_updatePending_PR($itemId){
+         return $this->db->table("purchase_request")
+                ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
+                ->set('approval_date', date('Y-m-d H:i:s'))
+                ->set('updated_at', date('Y-m-d H:i:s'))
+                ->set('status','Pending')
                 ->update();
     }
 
@@ -635,7 +725,7 @@ class AppsModel extends Model
                 ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
                 ->set('approval_date', date('Y-m-d H:i:s'))
                 ->set('updated_at', date('Y-m-d H:i:s'))
-                ->set('status','approved')
+                ->set('status','Approved')
                 ->set('approval_id', session()->get('user_login')->id)
                 ->update();
     }
@@ -644,8 +734,38 @@ class AppsModel extends Model
                 ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
                 ->set('approval_date', date('Y-m-d H:i:s'))
                 ->set('updated_at', date('Y-m-d H:i:s'))
-                ->set('status','declined')
+                ->set('status','Rejected')
                 ->set('approval_id', session()->get('user_login')->id)
                 ->update();
     }
+
+    public function post_updatePending_PO($itemId){
+         return $this->db->table("purchase_order")
+                ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
+                ->set('approval_date', date('Y-m-d H:i:s'))
+                ->set('updated_at', date('Y-m-d H:i:s'))
+                ->set('status','Pending')
+                ->update();
+    }
+
+    public function post_updateApprove_PO($itemId){
+         return $this->db->table("purchase_order")
+                ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
+                ->set('approval_date', date('Y-m-d H:i:s'))
+                ->set('updated_at', date('Y-m-d H:i:s'))
+                ->set('status','Approved')
+                ->set('approval_id', session()->get('user_login')->id)
+                ->update();
+    }
+    public function post_updateDecline_PO($itemId){
+         return $this->db->table("purchase_order")
+                ->where($this->primaryKey, $itemId) // Or $data['primaryKey']
+                ->set('approval_date', date('Y-m-d H:i:s'))
+                ->set('updated_at', date('Y-m-d H:i:s'))
+                ->set('status','Canceled')
+                ->set('approval_id', session()->get('user_login')->id)
+                ->update();
+    }
+
+
 }

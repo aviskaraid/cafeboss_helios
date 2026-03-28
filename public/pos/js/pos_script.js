@@ -68,7 +68,6 @@
       receiptNo: null,
       receiptDate: null,
       amount:0,
-      payMethod:"cash",
       account_name:null,
       account_bank:null,
       account_number:null,
@@ -162,8 +161,31 @@
       priceFormat(number) {
         return number ? `${numberFormatDisplay(number)}` : `Rp. 0`;
       },
+      clear() {
+        this.cash = 0;
+        this.disc = 0;
+        this.cart = [];
+        this.receiptNo = null;
+        this.receiptDate = null;
+        this.updateChange();
+        this.clearSound();
+        this.member = {};
+        this.table = {};
+        this.amount = 0;
+        this.payMethod="cash";
+        this.account_name=null;
+        this.account_bank=null;
+        this.account_number=null;
+        this.account_trans_number=null;
+        this.isPayDebit=false;
+        this.isPayTransfer=false;
+        this.isPayCash=true;
+        this.pay_refNumber=null;
+        this.pay_note=null;
+      },
       chooseMenu(type) {
         if(type=="table"){
+          this.activeMenu = type;
           if(this.cart.length > 0){
             this.cart = [];
             this.activeMenu = type;
@@ -356,7 +378,6 @@
             });
       },
       submitHoldOrdPay() {
-        console.log(this.payMethod);
         if(this.member === null  || this.member === undefined || (typeof this.member === 'object' && Object.keys(this.member).length === 0)){
 
         }else{
@@ -491,7 +512,9 @@
 
           const data = await response.json();
           if(data.status === "success"){
+            console.log("DATA SUCCESS "+JSON.stringify(data));
             if(data.data !== null){
+              console.log("data.data !==null");
               this.exist_pos_id = data.data.id;
               this.exist_balance = data.data.opening_amount;
               this.exist_store = data.data.store;
@@ -507,6 +530,7 @@
             }else{
               console.log("data.data ===null");
               if(Object.keys(this.params_store).length > 0 && this.params_balance > 0 && this.params_shift > 0){
+                console.log("data.data ===null existshift true");
                 const currentDate = getBaseDate();
                 this.exist_startTime = currentDate;
                 this.exist_sessionPos = crypto.randomUUID();
@@ -550,6 +574,40 @@
             // Handle network errors or other exceptions
         }
       },
+      async getTransactionPending() {
+        try {
+          const myData = {
+                location_id: JSON.parse(getCookie('store')).id,
+                status:"pending"
+              };
+          const csrfToken = document.querySelector('meta[name="X-CSRF-TOKEN"]').getAttribute('content');
+          const response = await fetch('http://localhost:8080/widget/pending_transaction', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+              },
+              body: JSON.stringify(myData) // Send your data as JSON
+          });
+
+          if (!response.ok) {
+              // Handle HTTP errors
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          if(data.status === "success"){
+            if(data.data !== null){
+              this.transaction_pending = data.data;
+            }else{
+
+            }
+          }
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle network errors or other exceptions
+        }
+      },
       async startShiftPOS() {
         try {
           const myData = {
@@ -576,6 +634,7 @@
 
           const data = await response.json();
           if(data.status === "exist"){
+              console.log("DATA EXIST Start SHIft"+JSON.stringify(data));
               setCookie("pos_id",this.exist_pos_id);
               setCookie("session_pos",this.exist_sessionPos);
               setCookie("start_time",this.exist_startTime);
@@ -583,9 +642,10 @@
               setCookie("store_setup",JSON.stringify(this.store_setup));
               setCookie("amount_opening",this.exist_balance);
               setCookie('shift',this.exist_shift);
-             // this.reUpdateProducts();
+              this.reUpdateProducts();
               this.existShift = false;
           }if(data.status === "add"){
+            console.log("DATA ADD Start SHIft"+JSON.stringify(data));
               setCookie("pos_id",this.exist_pos);
               setCookie("session_pos",this.exist_sessionPos);
               setCookie("start_time",this.exist_startTime);
@@ -595,6 +655,7 @@
               this.firstBalance = false; 
               this.initialData();
               this.addUpdateProducts();
+              console.log("ADD");
           }if(data.status === "error"){
              Swal.fire({
                 title: 'Ada Masalah dengan System ',
@@ -652,6 +713,45 @@
             });
 
       },
+      async addUpdateProducts() {
+        const storeId = this.store.id;
+        const endpoint = 'http://localhost:8080/posmain/getProducts/'+storeId; // Or any other specific endpoint
+        const fullURL = `${endpoint}`;
+        const response = await fetch(fullURL);
+        const data = await response.json();
+        this.products = data.product;
+        this.category = data.category;
+        for (let product of data.product) {
+          await this.db.addProduct(product);
+        }
+        for (let cat of data.category) {
+          await this.db.addCategory(cat);
+        }
+          await this.loadProducts();
+          this.loadTablePos();
+      },
+      async reUpdateProducts() {
+        const storeId = this.store.id;
+        const endpoint = 'http://localhost:8080/posmain/getProducts/'+storeId; // Or any other specific endpoint
+        const fullURL = `${endpoint}`;
+        const response = await fetch(fullURL);
+        const data = await response.json();
+        this.products = data.product;
+        this.category = data.category;
+        console.log("REUPDATE PRODUCTS "+JSON.stringify(this.products));
+        this.loadTablePos();
+        // for (let update of data.category) {
+        //   await this.db.editCategory(update);
+        //   console.log("update category "+JSON.stringify(update));
+        // }
+        // for (let update of data.product) {
+        //   await this.db.editProduct(update);
+        //   console.log("update product "+JSON.stringify(update));
+        // }
+          //await this.loadProducts();
+          console.log("REUPDATE");
+          this.initialData();
+      },
       async submitransaction() {
         const getPayment ={
             payMethod:this.payMethod,
@@ -695,8 +795,8 @@
             const data = await response.json();
             console.log(data);
             if(data.status === "success"){
-              //this.clear();
-              //this.initialData();
+              this.clear();
+              this.initialData();
             }else{
               Swal.fire({
                   title: 'Terjadi masalah dengan system',
@@ -738,13 +838,15 @@
     
     return {
       db,
-      //getCategory: async () => await db.getAll("category"),
-      //getProducts: async () => await db.getAll("products"),
-      //addCategory: async (category) => await db.add("category", category),
-      //editCategory: async (category) =>await db.put("category", category),
-      //addProduct: async (product) => await db.add("products", product),
-      //editProduct: async (product) => await db.put("products", product),
-      //deleteProduct: async (product) => await db.delete("products", product.id),
+      getCategory: async () => await db.getAll("category"),
+      getProducts: async () => await db.getAll("products"),
+      addCategory: async (category) => await db.add("category", category),
+      editCategory: async (category) =>
+        await db.put("category", category),
+      addProduct: async (product) => await db.add("products", product),
+      editProduct: async (product) =>
+        await db.put("products", product),
+      deleteProduct: async (product) => await db.delete("products", product.id),
     };
   }
 

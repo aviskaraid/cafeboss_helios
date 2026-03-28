@@ -89,4 +89,32 @@ class PosModel extends Model
         $result = $builder->get()->getResult();
         return $result;
     }
+    public function getFoodMenuCategorybyStore($id = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('foodmenu_category a');
+        $builder->select("if(b.parent_id > 0,b.id,a.id) as id, if(b.parent_id > 0,b.category_name,a.category_name) as name,if(b.parent_id>0,CONCAT(a.label_name, ' | ', b.label_name),a.label_name) as label_name,if(b.parent_id > 0,b.parent_id,a.parent_id) as parent_id");
+        $builder->join("foodmenu_category b","b.parent_id = a.id","left");
+        $builder->join("store_category_map z","z.category_id = a.id or z.category_id = b.id","left");
+        if($id!=''){
+            $builder->where("z.store_id",$id);
+        }
+        $builder->groupBy("id");
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    public function getFoodMenu($keyword = null) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('foodmenu');
+        $builder->select('foodmenu.*,
+        a.category_id as category_id');
+        $builder->join('foodmenu_category_map a', 'a.foodmenu_id = foodmenu.id');
+        $builder->join('store_category_map b', 'b.category_id = a.category_id');
+        if($keyword != '') {
+            $builder->where('b.store_id', $keyword);
+        }
+        $builder->groupBy("foodmenu.id");
+        $result = $builder->get()->getResultArray();
+        return $result;
+    }
 }

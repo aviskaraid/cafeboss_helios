@@ -18,11 +18,6 @@
     <script src="<?=base_url()?>pos/js/pos_script.js"></script>
     <script src="<?=base_url()?>pos/js/plugin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-  .select2-container .select2-selection {
-    border-radius: 0.7rem; /* Example: applying a custom border-radius */
-  }
-</style>
 </head>
 <body class="bg-blue-gray-50" x-data="initApp()" x-init="initDatabase()">
   <div class="hide-print bg-gray-200 flex flex-col md:flex-row h-screen antialiased text-blue-gray-800">
@@ -50,7 +45,7 @@
                     </li>
                     <li>
                         <a href="#" x-on:click = "chooseMenu('pos')" class="flex items-center" 
-                        title="Point Of Sale (Register)">
+                        title="Point Of Sale (Register) Menu">
                         <span
                             class="flex items-center justify-center h-12 w-12 rounded-2xl"
                             x-bind:class="{
@@ -409,12 +404,13 @@
                         <img src="<?=base_url()?>pos/img/receipt-logo.png" alt="Zax Resto" class="mb-3 w-8 h-8 inline-block">
                     <h3 class="text-center text-2xl mb-4">Opening Balance</h3>
                     </div>
-                    <hr class="my-2">
+                    <hr class="my-4 border-t-2 border-gray-300">
+                    <!-- Choose Store -->
                     <div class="flex antialiased w-full">
                         <div class="px-2 pb-2 pl-2 pr-2 overflow-auto justify-center">
                             <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Choose Store : </h3>
                             <div class="flex justify-left items-center mb-4">
-                                <select class="choose_branch w-screen" id="choose_branch" x-show="openingStoreList().length" x-on:change="chooseStore($event.target.value)">
+                                <select class="choose_branch w-screen h-32" id="choose_branch" x-show="openingStoreList().length" x-on:change="chooseStore($event.target.value)">
                                     <option></option>    
                                     <template x-for="item in openingStoreList()" :key="item.id">
                                         <option :value="item.id" x-text="item.description">
@@ -440,6 +436,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Choose Store -->
                 </div>
                 <div class="p-4 w-full">
                 <button x-on:click="submitOpeningStore()" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Submit</button>
@@ -587,7 +584,11 @@
                 </div>
                 <div class="flex p-4 gap-2 w-full">
                 <button class=" flex-grow bg-pink-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="submitToPayForm()">PAY</button>
-                <button class="bg-cyan-500 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="">HOLD</button>
+                <button class="bg-cyan-500 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none"
+                x-bind:class="{'bg-cyan-500 hover:bg-cyan-600': submitHoldOrder(),'bg-blue-gray-200': !submitHoldOrder()}"
+                :disabled="!submitHoldOrder()"
+                x-on:click="submitToOrder(true)"
+                >HOLD</button>
                 </div>
                 <div class="p-4 gap-2 w-full">
                 <button class=" bg-gray-200 text-gray-400 text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="closeHPForm()">Close</button>

@@ -1,5 +1,7 @@
 $(function() {
     "use strict";
+    console.log(userData);
+    var supplierId = userData.supplier_id;
     let base_url = $("#baseUrl").val();
     const discount_view = document.getElementById('discount_view');
     const delivery_charge_view = document.getElementById('delivery_charge_view');
@@ -7,19 +9,11 @@ $(function() {
     const nextBtn = document.getElementById("next_btn");
     const createBtn = document.getElementById("create_btn");
     const btnSave = document.getElementById("btnSave");
-    const input_supplier = document.getElementById("input_supplier");
     const form_supplier = document.getElementById("form_supplier");
     const form_remark = document.getElementById("form_remark");
     const form_payment = document.getElementById("form_payment");
     const form_date = document.getElementById("form_date");
-     form_supplier.classList.add('card-disabled');
-     form_date.classList.add('card-disabled');
-     form_payment.classList.add('card-disabled');
-     form_remark.classList.add('card-disabled');
-    const input_taktikal_contract = document.getElementById("input_taktikal_contract");
-    input_taktikal_contract.value = 0;
     document.getElementById('taktikal_status').value = 0;
-    const switchTaktikal = document.querySelector(".custom-switches-stacked");
     createBtn.disabled = true;
     btnSave.disabled = true;
     let currentPage = 0;
@@ -28,6 +22,26 @@ $(function() {
     let dataReq = null;
     $(document).ready(function() {
         let totalData = 0;
+        checkSupplier();
+        document.getElementById("transaction_date").value = userData.transaction_date.substring(0, 10); 
+        document.getElementById("due_date").value = userData.due_date.substring(0, 10); 
+        document.getElementById("delivery_date").value = userData.delivery_date.substring(0, 10);
+        document.getElementById("remark").value = userData.remark;
+        document.getElementById("remark_delivery").value = userData.remark_delivery;
+        const myInput = document.getElementById("sub_total");
+        const myInput_view = document.getElementById("sub_total_view");
+        myInput.setAttribute("value", Math.trunc(userData.subtotal));
+        myInput_view.setAttribute("value", numberFormat(Math.trunc(userData.subtotal)));
+        document.getElementById("discount").value = Math.trunc(userData.discount);
+        document.getElementById("discount_view").value = numberFormat(Math.trunc(userData.discount));
+        document.getElementById("delivery_charge").value = Math.trunc(userData.delivery_charges);
+        document.getElementById("delivery_charge_view").value = numberFormat(Math.trunc(userData.delivery_charges));
+        document.getElementById("vat").value = numberFormat(Math.trunc(userData.vat));
+        document.getElementById("total").value = Math.trunc(userData.amount);
+        document.getElementById("total_view").value = numberFormat(Math.trunc(userData.amount));
+        
+        
+        checkPurchaseOrder(userData.id);
         $('.delivery_date').datepicker({
             format: 'yyyy-mm-dd', // Customize the date format
             autoclose: true,     // Automatically close after date selection
@@ -43,67 +57,8 @@ $(function() {
             autoclose: true,     // Automatically close after date selection
             todayHighlight: true // Highlight today's date
         });
-        switchTaktikal.addEventListener("change", (event) => {
-            const selectedValue = event.target.value;
-            document.getElementById('taktikal_status').value=selectedValue;
-            //getTaktikalBySupplier();
-            if(selectedValue==0){
-                $('.filter_taktikal').prop('disabled', true);
-                input_taktikal_contract.value = 0;
-                console.log("Disable True");
-
-            }else{
-                $('.filter_taktikal').prop('disabled', false);
-                input_taktikal_contract.value = selectedValue;
-                console.log("Disable False");
-            }
-        });
         prevBtn.addEventListener("click", prevPage);
         nextBtn.addEventListener("click", nextPage);
-        createBtn.addEventListener("click", ClickCreatePurchaseOrder);
-        function ClickCreatePurchaseOrder() {
-            checkPurchaseRequest($('#purchase_request').val());
-        };
-        $('.purchase_request').select2({
-            multiple: false,
-            placeholder: 'Search Request ID',
-            ajax: {
-            url: base_url+'apis/get_PurchaseRequestHeader', // The URL of your API
-            dataType: 'json',
-            delay: 250, // Wait 250ms after user stops typing to make the request
-            data: function(params) {
-                return {
-                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
-                page: params.page
-                };
-            },
-            processResults: function(data, params) {
-                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
-                    return {
-                            id: item.id,
-                            text: item.ref_code +' || '+item.ref_no,
-                            raw:item
-                        };
-                    });
-                return {
-                results: formattedData,
-                pagination: {
-                    more: (params.page * 30) < data.total_count // Example pagination logic
-                }
-                };
-            },
-            cache: true
-            },
-            minimumInputLength: 0 // Only start searching after the user types 1 character
-        });
-        $('#purchase_request').on('select2:select', function (e) {
-            var data = e.params.data;
-            var id = data.id;
-            console.log("Purchase_Request_id "+id);
-            document.getElementById("pr_id").value=$('#purchase_request').val();
-            document.getElementById("raw_pr").value = JSON.stringify(data.raw);
-            createBtn.disabled = false;
-        });
         function initialData(data){
             currentPage = 1;
             totalPages = Math.ceil(data.length / rowsPerPage);
@@ -131,13 +86,13 @@ $(function() {
                                     <td class="name-detail">${data.item_name}</td>
                                     <td class="parstock-detail">${data.par_stock}</td>
                                     <td class="stock-detail">${data.stock_on_hand}</td>
-                                    <td class="price-detail"><input type="text" class="form-control input_price_detail" name="pricedetail[${data.index_id}_${data.item_id}_${data.warehouse_id}_${data.par_stock}_${data.stock_on_hand}]" value="${data.purchase_price}"></td>
+                                    <td class="price-detail"><input type="text" class="form-control input_price_detail" name="pricedetail[${data.index_id}_${data.item_id}_${data.warehouse_id}_${data.par_stock}_${data.stock_on_hand}]" value="${Math.trunc(data.price)}"></td>
                                     <td style="width: 12%">
                                         <input type="number" name="qty[${data.index_id}_${data.item_id}_${data.warehouse_id}_${data.par_stock}_${data.stock_on_hand}]" class="form-control jumlah" 
-                                        value="${Math.trunc(data.request_stock)}" step="any">
+                                        value="${Math.trunc(data.purchase_stock)}" step="any">
                                     </td>
                                     <td>${data.main_unit}</td>
-                                    <td class="total-price">${Math.trunc(data.request_stock) * data.purchase_price}</td>
+                                    <td class="total-price">${Math.trunc(data.purchase_stock) * Math.trunc(data.price)}</td>
                                     <td class="date-stock">${getDate}</td>
                                     <td><button type="button" class="btn btn-danger btn-sm remove-detail" data-id="${runningIndex}" data-item="${data.item_id_stock}">Remove</button></td>
                                 </tr>`;
@@ -164,18 +119,21 @@ $(function() {
         }
 
         $(document).on("click", ".remove-detail", function() {
-            let detailID = $(this).data("id");
-            let itemId = $(this).data("item");
-            console.log(detailID+" "+itemId);
+             let detailID = $(this).data("id");
+            let itemIdStock = $(this).data("item");
+            let index_id = $(this).data("index_id");
+            let trans_id = document.getElementById('transaction_id').value;
+            console.log(index_id+" "+trans_id);
             $("#detail-" + detailID).remove();
-            const indexToRemove = dataReq.findIndex(item => item.item_id_stock === itemId.toString());
+            const indexToRemove = dataReq.findIndex(item => item.item_id_stock === itemIdStock.toString());
             if (indexToRemove !== -1) {
                 dataReq.splice(indexToRemove, 1);
             }
+            removeItemPO(index_id,trans_id);
         });
        
-        function checkPurchaseRequest($id,$supplier = null){
-            fetch(base_url+'apis/get_PurchaseRequestLines?keyword='+$id+'&supplier='+$supplier+'&selected='+0)
+        function checkPurchaseOrder($id,$supplier = null){
+            fetch(base_url+'apis/get_PurchaseOrderLines?keyword='+$id+'&supplier='+$supplier+'&selected='+0)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -200,35 +158,8 @@ $(function() {
                 });
         };
 
-        function getTaktikalBySupplier(){
-            fetch(base_url+'apis/get_taktikal_bysupplier?keyword='+input_supplier.value)
-                .then(response => response.json())
-                .then(data => {
-                    if(data.length > 0 ){
-                        const selectElement = $('#filter_taktikal');
-                        const option = new Option(data[0].ref_no+" | "+data[0].supplier_name, data[0].id, true, true);
-                        selectElement.append(option).trigger('change');
-                        selectElement.trigger({
-                            type: 'select2:select',
-                            params: {
-                                data: data
-                            }
-                        });
-                        document.getElementById("input_taktikal_contract").value = data[0].id;
-                    }else{
-                        document.getElementById("input_taktikal_contract").value = 0;
-                        const selectElement = $('#filter_taktikal');
-                        selectElement.val(null).trigger('change');
-                    }
-                   
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        };
-
-        $('#purchaseorder_form').on('submit', function(e) {
-            const myForm = document.querySelector('#purchaseorder_form');
+        $('#purchaseorder_form_edit').on('submit', function(e) {
+            const myForm = document.querySelector('#purchaseorder_form_edit');
             e.preventDefault();
             if (totalData > 0 &  document.getElementById("pr_id").value.length >0) {
                 Swal.fire({
@@ -244,7 +175,7 @@ $(function() {
                     showLoader();
                     const formData = new FormData(myForm);
                     //const data = Object.fromEntries(formData.entries());
-                    fetch(base_url +'purchase/purchaseorder/create_process', { // Replace '/auth/login' with your CI4 login route
+                    fetch(base_url +'purchase/purchaseorder/changes', { // Replace '/auth/login' with your CI4 login route
                         method: 'POST',
                         // headers: {
                         //     'Content-Type': 'application/json'
@@ -268,7 +199,7 @@ $(function() {
                                     Swal.fire({
                                         position: "center",
                                         icon: "success",
-                                        title: "Success Created",
+                                        title: "Success Changed",
                                         text: data.message,
                                         showConfirmButton: false,
                                         timer: 2500,
@@ -313,85 +244,6 @@ $(function() {
             }
         });
 
-        $('.filter_supplier').select2({
-            placeholder: 'Search for an Supplier',
-            ajax: {
-            url: base_url+'apis/get_supplier', // The URL of your API
-            dataType: 'json',
-            delay: 250, // Wait 250ms after user stops typing to make the request
-            data: function(params) {
-                return {
-                keyword: params.term, // Query parameter name (e.g., 'q' for search term)
-                page: params.page
-                };
-            },
-            processResults: function(data, params) {
-                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
-                    return {
-                            id: item.id,
-                            text: item.name,
-                            addressAttr: item.address 
-                        };
-                    });
-                return {
-                results: formattedData,
-                pagination: {
-                    more: (params.page * 30) < data.total_count // Example pagination logic
-                }
-                };
-            },
-            cache: true
-            },
-            minimumInputLength: 0 // Only start searching after the user types 1 character
-        });
-        $('#filter_supplier').on('select2:select', function (e) {
-            var data = e.params.data;
-            var id = data.id;
-            var address = data.addressAttr;
-            console.log("Supplier "+id);
-            console.log("address " +address);
-            input_supplier.value=id;
-            getTaktikalBySupplier(id);
-            checkPurchaseRequest(document.getElementById("pr_id").value,id);
-            document.getElementById("input_supplier_address").value = address;
-          
-        });
-        $('.filter_taktikal').select2({
-            placeholder: 'Search for an Taktikal Contract',
-            ajax: {
-            url: base_url+'apis/get_taktikal_bysupplier',
-            dataType: 'json',
-            delay: 250, // Wait 250ms after user stops typing to make the request
-            data: function(params) {
-                return {
-                keyword: input_supplier.value, // Query parameter name (e.g., 'q' for search term)
-                page: params.page
-                };
-            },
-            processResults: function(data, params) {
-                console.log(data);
-                const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
-                    return {
-                            id: item.id,
-                            text: item.ref_no+" | "+item.supplier_name,
-                        };
-                    });
-                return {
-                results: formattedData,
-                pagination: {
-                    more: (params.page * 30) < data.total_count // Example pagination logic
-                }
-                };
-            },
-            cache: true
-            },
-            minimumInputLength: 0 // Only start searching after the user types 1 character
-        });
-        $('#filter_taktikal').on('select2:select', function (e) {
-            var data = e.params.data;
-            var id = data.id;
-            document.getElementById("input_taktikal_contract").value=id;
-        });
 
         $(document).on("input", ".input_price_detail", function() {
             let row = $(this).closest("tr");
@@ -494,7 +346,7 @@ $(function() {
             let totalViewafterDisc = 0;
             totalafterDisc = subtotal-valueDisc;
             totalViewafterDisc = numberFormat(String(totalafterDisc));
-            console.log(totalafterDisc);
+            console.log("TOTAL AFTER "+totalafterDisc);
             // end discount
 
             // Vat = 
@@ -515,12 +367,77 @@ $(function() {
             totalViewaftervAT = numberFormat(String(totalaftervAT));
             console.log(totalaftervAT);
             // end Vat
-            const myInputTotal = document.getElementById("total");
-            const myInput_viewTotal = document.getElementById("total_view");
             // TOTAL = 
-            myInputTotal.setAttribute("value", totalaftervAT);
-            myInput_viewTotal.setAttribute("value", totalViewaftervAT);
+            document.getElementById("total").value = totalaftervAT;
+            document.getElementById("total_view").value = totalViewaftervAT;
         }
+
+        function checkSupplier(){
+            fetch(base_url+'apis/get_supplier?keyword='+supplierId)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data[0]);
+                    const selectElement = $('#filter_supplier');
+                    const option = new Option(data[0].name, data[0].id, true, true); 
+                    selectElement.append(option).trigger('change');
+                    selectElement.trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+                    document.getElementById("input_supplier").value=$('#filter_supplier').val();
+                    document.getElementById("input_supplier_address").value = data[0].address;
+                    document.getElementById("filter_supplier").disabled = true;
+                    document.getElementById("input_supplier_address").disabled = true;
+                    document.getElementById("taktikal_on").disabled = true;
+                    document.getElementById("taktikal_on").disabled = true;
+                    if(userData.taktikal ==="1"){
+                        document.getElementById("taktikal_on").checked = true;
+                        document.getElementById("taktikal_off").checked = false;
+                        document.getElementById("filter_taktikal").disabled = true;
+                        document.getElementById("input_taktikal_contract").value = userData.taktikal;
+                        checkTaktikal(userData.taktikal);
+                    }else{
+                        document.getElementById("filter_taktikal").disabled = true;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
+        function checkTaktikal($id){
+            fetch(base_url+'apis/get_taktikal_byid?keyword='+$id)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data[0]);
+                    const selectElement = $('#filter_taktikal');
+                    const option = new Option(data[0].ref_no+" | "+data[0].supplier_name, data[0].id, true, true); 
+                    selectElement.append(option).trigger('change');
+                    selectElement.trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
+
+        function removeItemPO($id,$transaction_id){
+            fetch(base_url+'apis/post_removePOItem?keyword='+$id+'_'+$transaction_id)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
     });
     
 });

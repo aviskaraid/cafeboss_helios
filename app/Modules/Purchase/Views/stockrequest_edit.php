@@ -28,11 +28,17 @@
                 <form id="stockrequest_form_changes" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="row mb-2">
-                       <div class="col-12 col-md-4 col-lg-4">
-                        <label>Ref ID</label>
-                           <input type="hidden" name="transaction_id" id="transaction_id" value="<?= $data->id ?>">
-                          <input type="text" class="form-control" placeholder="Ref No" name="ref_no" value="<?= $data->ref_no?>" id="ref_no" readonly>
-                      </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                          <label>Ref Code</label>
+                          <input type="hidden" name="transaction_id" id="transaction_id" value="<?= $data->id ?>">
+                          <input type="text" class="form-control" placeholder="Ref Code" name="ref_code" value="<?= $data->ref_code?>" id="ref_code" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-4 col-lg-4">
+                          <label>Ref No</label>
+                          <input type="text" class="form-control" placeholder="Ref No" name="ref_no" value="<?= $data->ref_no?>" id="ref_no">
+                        </div>
                     </div>
                     <div class="row mb-4">
                       <div class="col-12 col-md-4 col-lg-4">
@@ -69,7 +75,7 @@
                           <tbody id="detail_list">
                           </tbody>
                         </table>
-                        <div class="pagination-controls float-right">
+                        <div class="pagination-controls float-right " style="display: none;">
                             <button type="button" class="prev_btn btn btn-sm btn-icon icon-left btn-primary" id="prev_btn">Prev</button>
                               <span id="page-info"></span>
                             <button type="button" class="next_btn btn btn-sm btn-icon icon-left btn-primary" id="next_btn">Next</button>

@@ -14,8 +14,8 @@ class PurchaseRequestModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["ref_no","po_selected","request_id","transaction_date","remark","requester_id","approval_id","approval_date",
-                                "description","status","created_by","updated_by","deleted_by"];
+    protected $allowedFields = ["ref_code","ref_no","po_selected","request_id","transaction_date","remark","requester_id","approval_id","approval_date",
+                                "description","status","created_by","updated_by","deleted_by","raw_sr"];
 
     // Dates
     protected $useTimestamps = true;

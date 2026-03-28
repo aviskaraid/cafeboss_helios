@@ -34,7 +34,8 @@ $(function() {
                 const formattedData =  data.map(function(item){ // Assuming apiData has an 'items' array   
                     return {
                             id: item.id,
-                            text: item.ref_no
+                            text: item.ref_code + ' || '+item.ref_no,
+                            raw: item
                         };
                     });
                 return {
@@ -53,6 +54,7 @@ $(function() {
             var id = data.id;
             console.log("request_id "+id);
             document.getElementById("request_id").value=$('#stock_request').val();
+            document.getElementById("raw_sr").value = JSON.stringify(data.raw);
             createBtn.disabled = false;
         });
         function initialData(data){
@@ -84,7 +86,7 @@ $(function() {
                                     <td class="parstock-detail">${data.par_stock}</td>
                                     <td class="stock-detail">${data.stock_on_hand}</td>
                                     <td style="width: 12%">
-                                        <input type="number" name="qty[${data.item_id}_${data.warehouse_id}_${data.par_stock}_${data.stock_on_hand}_${data.index_id}]" class="form-control jumlah" value="${numberFormat(parseFloat(data.request_stock).toString())}" step="any">
+                                        <input type="number" name="qty[${data.index_id}_${data.item_id}_${data.warehouse_id}_${data.par_stock}_${data.stock_on_hand}]" class="form-control jumlah" value="${numberFormat(parseFloat(data.request_stock).toString())}" step="any">
                                     </td>
                                     <td>${data.main_unit}</td>
                                     <td class="date-stock">${getDate}</td>

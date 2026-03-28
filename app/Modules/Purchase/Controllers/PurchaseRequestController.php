@@ -51,11 +51,19 @@ class PurchaseRequestController extends BaseController{
         $jumlah = $post['qty'];
         $dataArray = [];
         $updateSR = [];
+        $ref_no = $post['ref_code'];
+        if(!empty($post['ref_no'])){
+            $ref_no = $post['ref_no'];
+        }
+        $dataSRRaw = json_decode($post['sr_raw'], true); 
         $add_trans = [
-            "ref_no"            => $post['ref_no'],
+            "ref_code"          => $post['ref_code'],
+            "ref_no"            => $ref_no,
             "request_id"        => $post['request_id'],
+            "department_id"     => $dataSRRaw['department_id'],
             "transaction_date"  => $trans_date,
             "remark"            => $post['remark'],
+            "status"            => "Draft",
             "requester_id"      => session()->get('user_login')->id,
             "created_by"        => session()->get('user_login')->id
         ];
@@ -71,19 +79,19 @@ class PurchaseRequestController extends BaseController{
         foreach ($jumlah as $key => $value) {
             $getItem = new ItemsModel();
             $partItem = explode("_", $key);
-            $KeyWordItem = $partItem[0]."_".$partItem[1];
+            $KeyWordItem = $partItem[1]."_".$partItem[2];
             $itemBom = $getItem->getItemsDetailbyLocation($KeyWordItem);
             $itemBom->use_stock = $value;
             $insertBom['transaction_id'] = $pr->getInsertID();
             $insertBom['item_id'] = $itemBom->item_id;
-            $insertBom['warehouse_id'] = $partItem[1];
-            $insertBom['stock_on_hand'] = $partItem[3];
-            $insertBom['par_stock'] = $partItem[2];
+            $insertBom['warehouse_id'] = $partItem[2];
+            $insertBom['stock_on_hand'] = $partItem[4];
+            $insertBom['par_stock'] = $partItem[3];
             $insertBom['request_stock'] = $value;
-            $insertBom['sr_line_id'] = $partItem[4];
+            $insertBom['sr_line_id'] = $partItem[0];
             $updateSelected['transaction_id'] = $post['request_id'];
             $updateSelected['item_id'] = $itemBom->item_id;
-            $updateSelected['id'] = $partItem[4];
+            $updateSelected['id'] = $partItem[0];
             $updateSelected['selected'] = 1;
             array_push($dataArray,$insertBom);
             array_push($updateSR,$updateSelected);

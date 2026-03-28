@@ -16,7 +16,7 @@
       <div class="section-header">
           <h1><?= $title ?></h1>
           <div class="section-header-button">
-              <a href="<?=site_url('master/warehouse/create')?>" class="btn btn-primary">Add New</a>
+              <a href="<?=site_url('purchase/goodreceive/create')?>" class="btn btn-primary">Add New</a>
           </div>
       </div>
       <?= $this->include('layout/alert') ?>

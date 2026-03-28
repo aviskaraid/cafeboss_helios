@@ -14,7 +14,7 @@ class StockRequestModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["ref_no","transaction_date","remark","requester_id","approval_id","approval_date","department_id",
+    protected $allowedFields = ["ref_code", "ref_no","transaction_date","remark","requester_id","approval_id","approval_date","department_id",
                                 "description","pr_selected","status","created_by","updated_by","deleted_by"];
 
     // Dates

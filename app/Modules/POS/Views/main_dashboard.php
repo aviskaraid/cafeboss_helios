@@ -9,7 +9,7 @@
     <!-- Add Tailwind CSS via CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script src="<?=base_url()?>pos/js/pos_main.js"></script>
+<script src="<?=base_url()?>pos/js/main_dashboard.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 </head>
 

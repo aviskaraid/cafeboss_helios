@@ -59,9 +59,10 @@
                 <tr>
                   <th>#</th>
                   <th>Date</th>
-                  <th>Ref No</th>
+                  <th>Ref</th>
                   <th>Requester</th>
                   <th>Status</th>
+                  <th>Remark</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -73,22 +74,28 @@
                   <tr>
                     <td><?=$no++?></td>
                     <td style="width:15%"><?=content_wrap($value['transaction_date'],14)?></td>
-                    <td style="width: 12%;"><a href="<?=site_url('purchase/stockrequest/'.$value['id'])?>" title="Edit Data" class="font-weight-bold"><?=content_wrap($value['ref_no'],20)?></td>
+                    <td style="width: 12%;"><a href="<?=site_url('purchase/stockrequest/'.$value['id'])?>" title="Edit Data" class="font-weight-bold"><?=content_wrap($value['ref_code'],20)?> || <?=content_wrap($value['ref_no'],20)?></td>
                     <td><?=content_wrap($value['requester_name'],20)?></td>
                     <td>
-                     <?php if ($value['status'] =='request'): ?>
-                      <button class="btn btn-outline-warning">Request</button>
+                     <?php if ($value['status'] =='Draft' or $value['status'] =='Pending'): ?>
+                      <button class="btn btn-outline-warning"><?= $value['status'] ?></button>
                       <?php else: ?>
                           <button class="btn btn-outline-info"><i class="fas fa-check"></i> Approved</span>
                       <?php endif; ?>  
+                      </button>
+                      </td>
+                      <td>
+                        <?= $value['remark'] ?>
+                      </td>
                     <td>
-                      <?php if ($value['status'] =='request'): ?>
-                        <button class ="btn btn-md btn-outline-primary text-dark" id="btn_approved" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Approve</button>
-                        <button class ="btn btn-md btn-outline-danger text-danger" id="btn_declined" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Declined</button>
-                       <?php elseif ($value['status'] =='deleted'): ?>
+                      <?php if ($value['status'] =='Draft' or $value['status'] =='Pending'): ?>
+                        <button class ="btn btn-md btn-outline-warning text-warning" id="btn_pending" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Pending</button>
+                        <button class ="btn btn-md btn-outline-primary text-primary" id="btn_approved" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Approve</button>
+                        <button class ="btn btn-md btn-outline-danger text-danger" id="btn_declined" data-id="<?= $value['id'] ?>"data-refno="<?= $value['ref_no'] ?>">Reject</button>
+                       <?php elseif ($value['status'] =='Deleted'): ?>
                         <span class="badge bg-danger text-white"><i class="fas fa-trash"></i> Deleted</a>
-                      <?php elseif ($value['status'] =='declined'): ?>
-                        <span class="badge bg-danger text-white"><i class="fas fa-ban"></i> Declined</a>
+                      <?php elseif ($value['status'] =='Rejected'): ?>
+                        <span class="badge bg-danger text-white"><i class="fas fa-ban"></i> Rejected</a>
                       <?php else:?>
                         <span class="badge bg-info text-white"><i class="fas fa-check"></i> Purchase Request</a>
                       <?php endif; ?>

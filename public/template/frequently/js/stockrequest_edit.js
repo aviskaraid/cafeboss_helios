@@ -12,7 +12,7 @@ $(function() {
         let totalData = 0;
         var submitButton = document.getElementById("btn_submit");
         
-        if(document.getElementById("status").value === 'approved'){
+        if(document.getElementById("status").value === 'Approved'){
             submitButton.style.visibility = "hidden";
         }
         var resetButton = document.getElementById("btn_reset");

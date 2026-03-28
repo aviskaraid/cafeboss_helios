@@ -35,27 +35,31 @@
               <div class="card-body col-md-12">
                 <form id="purchaserequest_form_changes" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-                    <div class="row">
-                       <div class="col-12 col-md-4 col-lg-4">
-                      <div class="mb-3">
-                        <label>Ref ID (Generate)</label>
-                         <input type="hidden" name="transaction_id" id="transaction_id" value="<?= $data->id ?>">
-                          <input type="text" class="form-control d-inline-block w-75" placeholder="Ref No" name="ref_no" value="<?= $data->ref_no ?>" id="ref_no" readonly>
-                      </div>
-                      </div>
+                    <div class="row mb-4">
+                        <div class="col-12 col-md-4 col-lg-4">
+                          <label>Ref Code</label>
+                          <input type="hidden" name="transaction_id" id="transaction_id" value="<?= $data->id ?>">
+                          <input type="text" class="form-control" placeholder="Ref Code" name="ref_code" value="<?= $data->ref_code?>" id="ref_code" readonly>
+                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-4">
+                        <div class="col-12 col-md-4 col-lg-4">
+                          <label>Ref No</label>
+                          <input type="text" class="form-control" placeholder="Ref No" name="ref_no" value="<?= $data->ref_no?>" id="ref_no">
+                        </div>
+                    </div>
+                    <div class="row mb-4">
                       <div class="col-12 col-md-4 col-lg-4">
                           <label>Get Stock Request ID </label>
                           <input type="hidden" name="request_id" id="request_id" value="<?= $data->request_id ?>">
-                          <input type="text" class="form-control d-inline-block w-75" name="request_ref_no" id="request_ref_no" value="<?= $data->request_ref_no ?>" readonly>
+                          <input type="text" class="form-control d-inline-block" name="request_ref_no" id="request_ref_no" value="<?= $data->request_ref_no ?>" readonly>
                           <input type="hidden" name="now_date" id="now_date" value="<?= getDateNow() ?>">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                       <div class="col-12 col-md-4 col-lg-4">
                           <label>Remark</label>
-                          <textarea name="remark" id="remark" class="form-control"  rows="4" cols="50"><?= $data->remark ?></textarea>
+                          <textarea name="remark" id="remark" class="form-control"  rows="4" cols="50" placeholder="Remark"><?= $data->remark ?></textarea>
                         </div>
                     </div>
                   <div class="row">

@@ -14,10 +14,12 @@ class PurchaseOrderModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["stockrequest_id","purchaserequest_id","transaction_date","type",
-                                "ref_no","remark","status","user_id","supplier_id","department_id",
-                                "company_code","line_item_number","ship_to","bill_to","user_id",
-                                "created_by","updated_by","deleted_by"];
+    protected $allowedFields = ["transaction_date","due_date","delivery_date","type","pr_id","taktikal","ref_code","amount",
+                                "ref_no","remark","remark_delivery","status","status_payment","type_payment",
+                                "subtotal","discount","vat","vat_amount","delivery_charges",
+                                "user_id","supplier_id","department_id","approval_id","approval_date",
+                                "company_code","line_item_number","ship_to","bill_to","requester_id",
+                                "created_by","updated_by","deleted_by","raw_pr"];
 
     // Dates
     protected $useTimestamps = true;
@@ -64,15 +66,70 @@ protected $allowCallbacks = true;
 
     public function getPaginated($num, $keyword = null, $status = 1) {
         $builder = $this->builder();
+        $builder->join("users a","a.id = purchase_order.requester_id","LEFT");
+        $builder->join("users b","b.id = purchase_order.approval_id","LEFT");
+        $builder->select("purchase_order.*,a.fullname as requester_name,b.fullname as approval_name");
         if($keyword != '') {
-            $builder->like('id', $keyword);
             $builder->orLike('ref_no', $keyword);
-            $builder->orLike('type', $keyword);
+            $builder->orLike('pr_id', $keyword);
         }
         return [
             'purchaseorder' => $this->paginate($num),
             'pager' => $this->pager,
         ];
+    }
+
+    public function getFind($whereConditions = null, $orderConditions = null, $groupbyCondition = null, $limit = 0, $offset = 0, array $nested = [], array $join = [], array $column = []){
+        $builder = $this->builder();
+        if(!empty($column)){
+            $col = implode(', ', $column);
+            $builder->select("{$col}");
+        }
+        if(!empty($join)){
+            foreach ($join as $Nestedkey) {
+                    $from = $Nestedkey['from'];    
+                    $fieldCol = $Nestedkey['field'];
+                    $sourceCol = $Nestedkey['source'];
+                $builder->join("{$from}","{$fieldCol} = {$sourceCol}");
+            }
+        }
+         if ($whereConditions != null){
+            $builder->groupStart();
+            foreach ($whereConditions as $key => $value) {
+                $builder->where($key,$value);
+            }
+            $builder->groupEnd();
+        }
+        if($groupbyCondition != null){
+            foreach ($groupbyCondition as $by => $escape) {
+                $builder->groupBy($by, $escape);
+            }
+        }
+        if($orderConditions != null){
+            foreach ($orderConditions as $order => $direction) {
+                $builder->orderBy($order, $direction);
+            }
+        }
+        if($limit != 0 ){
+            $builder->limit($limit,0);
+        }
+        if($limit != 0 && $offset != 0){
+            $builder->limit($limit,$offset);
+        }
+        $result = $builder->get()->getResult();
+        if(!empty($nested)){
+            $db = \Config\Database::connect();
+            foreach ($result as &$key) {
+                foreach ($nested as $Nestedkey => $Nestedvalue) {
+                        $child = $db->table($Nestedkey); // Specify the other table
+                        $child->where($Nestedvalue,$key->id);
+                        $qr = $child->get()->getResult();
+                        $key->$Nestedkey = $qr;
+                 }
+            }
+        }
+
+        return $result;
     }
 
 }

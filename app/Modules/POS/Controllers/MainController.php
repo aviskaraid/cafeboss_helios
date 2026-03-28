@@ -3,6 +3,8 @@
 namespace Modules\POS\Controllers;
 
 use App\Controllers\BaseController;
+use Modules\Master\Models\FoodMenuCategoryModel;
+use Modules\Master\Models\FoodMenuModel;
 use Modules\Master\Models\StoresModel;
 use Modules\Master\Models\TablesModel;
 use Modules\Master\Models\UsersModel;
@@ -31,16 +33,9 @@ class MainController extends BaseController
         $data = [
             'title' => 'CafeBoss',
             ];
-        return hmvcView($this->module, 'pos_main', $data);
+        return hmvcView($this->module, 'main_dashboard', $data);
     }
     public function indexpos(){
-        $business = business_detail();
-        $jsonBusiness = json_encode($business);
-        setcookie("business",$jsonBusiness);
-        $prefix = setup_business("stores_prefixes")->stores_prefixes;
-        $server = apps("server_url")->server_url;
-        setcookie("prefix",$prefix);
-        setcookie("server",$server);
         $userModel = new UsersModel();
         $whreUser = ['id'=>session()->get("user_login")->id];
         $getUser = $userModel->getFind($whreUser)[0];
@@ -56,7 +51,7 @@ class MainController extends BaseController
         $json = $this->request->getJSON();
         if($json){
                 $pos = new PosModel();
-                $where = ["id"=>$json->store_id->id,"status"=>"open"];
+                $where = ["store_id"=>$json->store_id->id,"status"=>"open"];
                 $getExist = $pos->getFind(null,$where);
                 $stores = new StoresModel();
                 if($getExist!=null){
@@ -78,6 +73,7 @@ class MainController extends BaseController
         $json = $this->request->getJSON();
         if($json){
             $user = get_user(session()->get('user_login')->id);
+            //$user = get_user(1);
             $add_shift = [
                 "business_id"           => $json->business_id,
                 "store_id"              => intval($json->store_id),
@@ -120,8 +116,8 @@ class MainController extends BaseController
             "pos_id"            =>$json->pos_id,
             "type"              =>"resto",
             "shift"             =>$json->shift,
-            "sub_type"          =>(!$json->hold)?'dine_in':'take_away',
-            "payment_method"    =>$json->payment->payMehtod,
+            "sub_type"          =>($json->hold==true)?'dine_in':'take_away',
+            "payment_method"    =>$json->payment->payMethod,
             "customer_id"       =>$json->customer->id,
             "table_id"          =>$json->table->id,
             "sequence"          =>($json->hold==true)?0:getSequenceTransac($json->pos_id),
@@ -164,5 +160,20 @@ class MainController extends BaseController
         //$tbl->update($json->table->id,$updatesTable);
         return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','data'=>$json]);
         
+    }
+
+    public function getProducts($id){
+        $branch = new StoresModel();
+        $whreBranch = ['id'=>$id];
+        $getBranch = $branch->getFind($whreBranch)[0];
+        $posModel = new PosModel();
+        // $CatWHere = ["category.active"=>1,"groups.name"=>"restaurant"];
+        $getCat = $posModel->getFoodMenuCategorybyStore($id);
+        $getMenu = $posModel->getFoodMenu($id);
+        $data['store']     = $getBranch;
+        $data['category']   = $getCat;
+        $data['product']    = $getMenu;
+        return $this->response->setJSON($data);
+       
     }
 }

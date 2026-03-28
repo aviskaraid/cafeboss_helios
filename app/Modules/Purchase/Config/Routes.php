@@ -22,5 +22,10 @@ $routes->group('purchase', ['filter' => 'isLoggedIn','namespace' => 'Modules\Pur
     $routes->post('purchaseorder/create_process','PurchaseOrderController::create_process');
     $routes->get('purchaseorder/(:any)', 'PurchaseOrderController::edit/$1');
     $routes->post('purchaseorder/changes','PurchaseOrderController::changes');
+
+    $routes->get('goodreceive/create', 'PurchaseGoodReceiveController::create');
+    $routes->post('goodreceive/create_process','PurchaseGoodReceiveController::create_process');
+    $routes->get('goodreceive/(:any)', 'PurchaseGoodReceiveController::edit/$1');
+    $routes->post('goodreceive/changes','PurchaseGoodReceiveController::changes');
     // Add more routes here
 });

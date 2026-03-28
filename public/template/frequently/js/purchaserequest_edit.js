@@ -12,7 +12,7 @@ $(function() {
         let totalData = 0;
         var submitButton = document.getElementById("btn_submit");
         
-        if(document.getElementById("status").value === 'approved'){
+        if(document.getElementById("status").value === 'Approved'){
             submitButton.style.visibility = "hidden";
         }
         var resetButton = document.getElementById("btn_reset");
@@ -33,7 +33,8 @@ $(function() {
             // Logic Slice
             const start = (page - 1) * rowsPerPage;
             const end = start + rowsPerPage;
-            const paginatedItems = data.slice(start, end);
+            // const paginatedItems = data.slice(start, end);
+            const paginatedItems = data;
 
             // Buat Baris <tr>
             paginatedItems.forEach((data,index) => {
@@ -213,6 +214,7 @@ $(function() {
                     console.error('Error:', error);
                 });
         };
+
     });
     
 });

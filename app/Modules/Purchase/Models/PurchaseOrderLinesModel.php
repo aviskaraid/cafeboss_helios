@@ -4,9 +4,9 @@ namespace Modules\Purchase\Models;
 
 use CodeIgniter\Model;
 
-class PurchaseRequestLinesModel extends Model
+class PurchaseOrderLinesModel extends Model
 {
-    protected $table      = 'purchase_request_lines'; // Table name
+    protected $table      = 'purchase_order_lines'; // Table name
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
@@ -14,8 +14,10 @@ class PurchaseRequestLinesModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["transaction_id","item_id","stock_on_hand","sr_line_id","par_stock","request_stock","warehouse_id","remark","selected","price","total_price",
-                                "created_by","updated_by","deleted_by","created_at","updated_at","deleted_at","deleted"];
+    protected $allowedFields = ["transaction_id","item_id","stock_on_hand","closed",
+    "pr_line_id","par_stock","purchase_stock","warehouse_id","remark","price","total_price","selected",
+    "created_by","updated_by","deleted_by","created_at","updated_at","deleted_at","deleted"];
+
 
     // Dates
     protected $useTimestamps = true;
@@ -69,7 +71,7 @@ class PurchaseRequestLinesModel extends Model
         return $getData;
     }
 
-        public function updateCloseAndSelected($data, $selected = null, $close = null){
+    public function updateCloseAndSelected($data, $selected = null, $close = null){
         $builder = $this->builder();
         foreach ($data as &$item) {
             if($close != ''){

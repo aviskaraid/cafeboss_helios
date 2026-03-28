@@ -43,11 +43,17 @@ class StockRequestController extends BaseController{
         $post = $this->request->getJson(true);
         $dataArray = [];
         $trans_date = date("Y-m-d"); 
+        $ref_no = $post['ref_code'];
+        if(!empty($post['ref_no'])){
+            $ref_no = $post['ref_no'];
+        }
         $add_trans = [
-            "ref_no"            => $post['ref_no'],
+            "ref_code"          => $post['ref_code'],
+            "ref_no"            => $ref_no,
             "department_id"     => $post['input_department'],
             "transaction_date"  => $trans_date,
             "remark"            => $post['remark'],
+            "status"            => "Draft",
             "requester_id"      => session()->get('user_login')->id,
             "created_by"        => session()->get('user_login')->id
         ];
@@ -96,10 +102,10 @@ class StockRequestController extends BaseController{
         $id = $post['transaction_id'];
         $getSR = new StockRequestModel();
         $update_trans = [
-            "ref_no"            => $post['ref_no'],
-            "department_id"     => $post['input_department'],
-            "transaction_date"  => $trans_date,
-            "remark"            => $post['remark']
+            "ref_no"                => $post['ref_no'],
+            "department_id"         => $post['input_department'],
+            "transaction_date"      => $trans_date,
+            "remark"                => $post['remark']
         ];
         $updated = $getSR->update($id,$update_trans);
         if(!$updated){

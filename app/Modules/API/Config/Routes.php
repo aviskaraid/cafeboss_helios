@@ -35,16 +35,24 @@ $routes->group('apis', ['namespace' => 'Modules\API\Controllers'], function($rou
     $routes->get('get_pos_table','ApiAppsController::getPosTable');
     $routes->get('get_customer','ApiAppsController::getCustomer');
     $routes->get('get_taktikal_bysupplier','ApiAppsController::get_TaktikalBySupplier');
-
+    $routes->get('get_taktikal_byid','ApiAppsController::get_TaktikalById');
 
 
     $routes->get('get_PurchaseRequestHeader','ApiAppsController::get_PurchaseRequestHeader');
     $routes->get('get_PurchaseRequestLines','ApiAppsController::get_PurchaseRequestLines');
+    $routes->get('get_PurchaseOrderHeader','ApiAppsController::get_PurchaseOrderHeader');
+    $routes->get('get_PurchaseOrderLines','ApiAppsController::get_PurchaseOrderLines');
     // APPROVEDD//
 
+    $routes->post('post_SRPending','ApiAppsController::post_updatePendingSR');
     $routes->post('post_SRApprove','ApiAppsController::post_updateApproveSR');
     $routes->post('post_SRDecline','ApiAppsController::post_updateDeclineSR');
+    $routes->post('post_PRPending','ApiAppsController::post_updatePendingPR');
     $routes->post('post_PRApprove','ApiAppsController::post_updateApprovePR');
     $routes->post('post_PRDecline','ApiAppsController::post_updateDeclinePR');
+    $routes->post('post_POPending','ApiAppsController::post_updatePendingPO');
+    $routes->post('post_POApprove','ApiAppsController::post_updateApprovePO');
+    $routes->post('post_PODecline','ApiAppsController::post_updateDeclinePO');
     $routes->get('post_removePRItem','ApiAppsController::post_removePRItem');
+    $routes->get('post_removePOItem','ApiAppsController::post_removePOItem');
 });
