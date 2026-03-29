@@ -111,3 +111,43 @@ function dateFormat(date) {
         const formatter = new Intl.DateTimeFormat('id', { dateStyle: 'short', timeStyle: 'short'});
         return formatter.format(date);
 }
+
+function getFormatDate(stringDate){
+const mysqlDatetimeString =stringDate; 
+
+// 1. Create a Date object from the MySQL datetime string
+const dateObject = new Date(mysqlDatetimeString);
+
+// 2. Extract and format the date part using toISOString() and slice()
+const dateOnlyISO = dateObject.toISOString().slice(0, 10); // "YYYY-MM-DD"
+
+// 3. Alternatively, use toDateString() for a more human-readable format
+const dateOnlyReadable = dateObject.toDateString(); // "Thu Oct 26 2023"
+
+// 4. Or, construct a custom format
+const year = dateObject.getFullYear();
+const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+const day = dateObject.getDate().toString().padStart(2, '0');
+const customFormattedDate = `${year}-${month}-${day}`; // "YYYY-MM-DD"
+return dateOnlyISO;
+}
+
+function getFormatTime(stringDate){
+const dateObject = new Date(stringDate);
+
+// Method 1: Using toTimeString() and slicing
+const timeString1 = dateObject.toTimeString().slice(0, 8); // Extracts HH:MM:SS
+
+// Method 2: Manually extracting hours, minutes, and seconds
+const hours = dateObject.getHours();
+const minutes = dateObject.getMinutes();
+const seconds = dateObject.getSeconds();
+
+// Format with leading zeros if needed
+const formattedHours = String(hours).padStart(2, '0');
+const formattedMinutes = String(minutes).padStart(2, '0');
+const formattedSeconds = String(seconds).padStart(2, '0');
+
+const timeString2 = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+return timeString2;
+}

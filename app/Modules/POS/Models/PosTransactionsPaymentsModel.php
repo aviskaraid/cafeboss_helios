@@ -14,8 +14,8 @@ class PosTransactionsPaymentsModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["transaction_id","business_id","is_return","amount","method","payment_type",
-                                "transaction_number","paid_on","note","bank_account_number","created_by",
+    protected $allowedFields = ["transaction_id","business_id","is_return","amount","changes","method","payment_type","payment_ref_no",
+                                "transaction_number","paid_on","note","bank_account_name","bank_account_number","created_by",
                                 "updated_by","deleted_by"];
 
     // Dates

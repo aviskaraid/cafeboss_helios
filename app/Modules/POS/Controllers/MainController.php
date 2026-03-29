@@ -30,6 +30,7 @@ class MainController extends BaseController
         $getUser = $userModel->getFind($whreUser)[0];
         //dd(json_encode($getUser,JSON_PRETTY_PRINT));
         setcookie('user', json_encode($getUser),0, "/");
+
         $data = [
             'title' => 'CafeBoss',
             ];
@@ -43,6 +44,7 @@ class MainController extends BaseController
         setcookie('user', json_encode($getUser),0, "/");
         $data = [
             'title' => 'CafeBoss',
+            'image_logo' => ((getApps()->img_thumbnails==null))?"/images/noImage.png":getApps()->img_thumbnails
             ];
         return hmvcView($this->module, 'main', $data);
     }
@@ -92,7 +94,7 @@ class MainController extends BaseController
             }else{
                 $insert = $pos->save($add_shift);
                 if($insert){
-                    return $this->response->setJSON(['status' => 'add', 'message' => "Successfully Add"]);
+                    return $this->response->setJSON(['status' => 'add', 'message' => "Successfully Add", 'data'=>$pos->getInsertID()]);
                 }else{
                     return $this->response->setJSON(['status' => 'error', 'message' => "Failed Add"]);
                 }
@@ -107,7 +109,6 @@ class MainController extends BaseController
         // $expiration_time = time() + (86400 * 1); // Cookie expires in 1 days
         //setcookie($cookie_name, $cookie_value, $expiration_time, "/");
     }
-
     public function inputTransaction(){
         $posTransaction = new PosTransactionsModel();
         $posTransactionPayment = new PosTransactionsPaymentsModel();
@@ -192,13 +193,16 @@ class MainController extends BaseController
             $posTransaction->save($headers);
             $transactionId = $posTransaction->getInsertID();
             $payment = [
-                "transaction_id"    =>$transactionId,
-                "business_id"       =>$json->store->business_id,
-                "amount"            =>0,
-                "method"            =>$json->payment->payMethod,
-                "payment_type"      =>$json->payment->payMethod,
-                "bank_account_number"   => $json->payment->account_name." : ".$json->payment->account_number,
-                "transaction_no"        => ($json->payment->account_name=="")?"":$json->payment->account_trans_number,
+                "transaction_id"        =>$transactionId,
+                "business_id"           =>$json->store->business_id,
+                "amount"                =>$json->payment->amount,
+                "changes"               =>$json->payment->change,
+                "method"                =>$json->payment->payMethod,
+                "payment_type"          =>$json->payment->payMethod,
+                "transaction_number"    => ($json->payment->account_trans_number==null)?null:$json->payment->account_trans_number,    
+                "bank_account_name"     => ($json->payment->account_name==null)?null:$json->payment->account_bank.' - '.$json->payment->account_name,
+                "bank_account_number"   => ($json->payment->account_number==null)?null:$json->payment->account_number,
+                "payment_ref_no"        => ($json->payment->account_bank==null)?null:$json->payment->account_bank.' - '.$json->payment->account_trans_number,
                 "paid_on"               => ($json->hold==true)?null:date('Y-m-d H:i:s'),
                 "note"                  => "",
             ];
@@ -225,7 +229,27 @@ class MainController extends BaseController
             return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','data'=>$json]);
         }
     }
-
+    public function closeShift(){
+        $posTransaction = new PosModel();
+        $json = $this->request->getJSON();
+        $headers = [
+            "status"            =>"close",
+            "store_id"          =>$json->store->id,
+            "shift"             =>$json->shift,
+            "session"           =>$json->session,
+            "close_at"          =>date('Y-m-d H:i:s'),
+            "closing_amount"    =>$json->closing_amount,
+            "closing_note"      =>$json->note,
+            "total_cash"        =>$json->total_cash,
+            "total_card"        =>$json->total_card,
+            "total_transfer"    =>$json->total_bank_transfer,
+            "closed_by"          =>$json->user->id
+        ];
+        $posTransaction->where('id', $json->pos_id);
+        $posTransaction->update(null,$headers);
+        $data['redirect'] = "posmain";
+        return $this->response->setJSON(['status' => 'success', 'message' => 'successfully','redirect'=>"posmain"]);
+    }
     public function getProducts($id){
         $branch = new StoresModel();
         $whreBranch = ['id'=>$id];
@@ -252,6 +276,14 @@ class MainController extends BaseController
         $branch = new PosTransactionsModel();
         $getProduct = $branch->getMemberByLines($id);
         $data['customer']    = $getProduct;
+        return $this->response->setJSON($data);
+       
+    }
+
+    public function getSummaryTransaction($id){
+        $branch = new PosTransactionsModel();
+        $getData = $branch->getSummaryTransaction($id);
+        $data['transactions']    = $getData;
         return $this->response->setJSON($data);
        
     }

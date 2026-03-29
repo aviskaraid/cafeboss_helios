@@ -23,6 +23,7 @@
       //params//
       pos_id:(getCookie('pos_id')!==null)?JSON.parse(getCookie('pos_id')):null,
       firstBalance:false,
+      closeCashier:false,
       existShift : false,
       params_store:{},
       params_balance:0,
@@ -32,15 +33,34 @@
       end_time:null,
       business:{},
       user:(getCookie('user')!==null)?JSON.parse(getCookie('user')):null,
-      
       //params//
 
+      // CLOSING //
+      input_closing_cash: 0,
+      input_closing_card: 0,
+      input_closing_banktransfer: 0,
+      total_closing: 0,
+      note_closing: "",
+
+      // OPEN DETAIL //
+      Total_Transaction: 0,
+      Amount_Transaction: 0,
+      Total_Final: 0,
+      Amount_Final: 0,
+      Total_Pending: 0,
+      Amount_Pending: 0,
+      Total_Cash: 0,
+      Amount_Cash: 0,
+      Total_Card: 0,
+      Amount_Card: 0,
+      Total_Bank_Transfer: 0,
+      Amount_Bank_Transfer: 0,
       // SHOW //
       isShowMember:false,
       isShowHoldAndPay:false,
       isShowPayForm:false,
       isInputDisc: false,
-
+      isopenDetail:false,
       //exisst//
       exist_user:{},
       exist_store:{},
@@ -73,7 +93,7 @@
       account_bank:null,
       account_number:null,
       account_trans_number:null,
-      isPayDebit:false,
+      isPayCard:false,
       isPayTransfer:false,
       isPayCash:true,
       pay_refNumber:null,
@@ -119,6 +139,18 @@
         console.log(JSON.stringify(member));
         this.member = member;
         this.isShowMember = false;
+      },
+      chooseBank(bank) {
+        this.account_bank = bank;
+      },
+      setAccountNumber(number){
+        this.account_number = number;
+      },
+      setAccountName(name){
+        this.account_name = name;
+      },
+      setTransactionNumber(number) {
+        this.account_trans_number = number;
       },
       addToCart(foodMenu) {
         const index = this.findCartIndex(foodMenu);
@@ -178,7 +210,7 @@
         this.account_bank=null;
         this.account_number=null;
         this.account_trans_number=null;
-        this.isPayDebit=false;
+        this.isPayCard=false;
         this.isPayTransfer=false;
         this.isPayCash=true;
         this.pay_refNumber=null;
@@ -217,10 +249,10 @@
           this.updateCashPay(0);
           this.isPayCash = true;
           this.payMethod = "cash";
-        }if(method==="debit"){
+        }if(method==="card"){
           this.updateCashPay(this.getTotalPrice());
-          this.isPayDebit = true;
-          this.payMethod = "debit";
+          this.isPayCard = true;
+          this.payMethod = "card";
         }if(method==="bank_transfer"){
           this.updateCashPay(this.getTotalPrice());
           this.isPayTransfer = true;
@@ -228,7 +260,27 @@
         }
         this.isPayMethod = false;
       },
-            updateCash(value) {
+      updateCloseCash(value) {
+        this.input_closing_cash = parseFloat(value.replace(/[^0-9]+/g, ""));
+        console.log("Cash "+this.input_closing_cash);
+        this.updateTotalClosing();
+      },
+      updateCloseCard(value) {
+        this.input_closing_card = parseFloat(value.replace(/[^0-9]+/g, ""));
+        this.updateTotalClosing();
+      },
+      updateCloseBankTransfer(value) {
+        this.input_closing_banktransfer = parseFloat(value.replace(/[^0-9]+/g, ""));
+        this.updateTotalClosing();
+      },
+      updateNoteClosing(value) {
+        this.note_closing = value;
+      },
+      updateTotalClosing() {
+        this.total_closing = this.input_closing_cash + this.input_closing_card + this.input_closing_banktransfer;
+        console.log("Total Closing "+this.total_closing);
+      },
+      updateCash(value) {
         this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
         this.updateChange();
       },
@@ -362,12 +414,31 @@
       closeAllForm(){
         this.isShowHoldAndPay = false;
         this.isShowPayForm = false;
+        this.isopenDetail = false;
+        this.closeCashier = false;
+      },
+      closeModalMember() {
+        this.isShowMember = false;
+      },
+      OpenRegisterDetail(){
+        this.isopenDetail = true;
+        this.getDetailAmountTransaction(this.pos_id);
+
+      },
+      closeModalCloseCashier() {
+        this.closeCashier = false;
+      },
+      closeModalPosDetail(){
+        this.isopenDetail = false;
       },
       submit(){
         console.log("Submit");
       },
       submitable() {
         return  Object.keys(this.member).length > 0 && this.cart.length > 0;
+      },
+      submitClosing() {
+        return  this.total_closing > 0;
       },
       submitHoldOrder() {
         return Object.keys(this.pilih_table).length > 0 && this.cart.length > 0;
@@ -425,18 +496,6 @@
           this.table = table;
           this.item_transaction = table.pos_transaction;
           this.item_transaction_id = table.pos_transaction.id;
-          // Swal.fire({
-          //         title: 'Meja ini tidak bisa digunakan!',
-          //         text: "Silahkan pilih meja yang lain",
-          //         icon: 'warning',
-          //         showCancelButton: false,
-          //         confirmButtonColor: '#3085d6',
-          //         cancelButtonColor: '#d33',
-          //         confirmButtonText: 'CLOSE'
-          //       }).then((result) => {
-          //         if (result.isConfirmed) {
-          //         }
-          //       });
            this.cart = [];
           this.getDataMemberLines(table.pos_transaction.id);
           this.getDataProductsLines(table.pos_transaction.id);
@@ -483,11 +542,27 @@
       submitOpeningStore(){
         this.checkOpenShift();
       },
+      submitClosingStore(){
+        this.closeCashier = true;
+      },
+      submitEndCashier(){
+        this.formClosing();
+      },
+      getStartTime(type){
+        let Result = null;
+        var getDate = getFormatDate(this.start_time);
+        var getTime = getFormatTime(this.start_time);
+        if(type==="date"){
+          Result = getDate;
+        }else{
+          Result = getTime;
+        }
+        return Result;
+      },
       setOpeningBalance(value) {
         this.params_balance = parseFloat(value.replace(/[^0-9]+/g, ""));
       },
       //OpeningForm//
-
       // LIST DATA //
       allArea(){
         console.log(this.listofTable);
@@ -622,6 +697,7 @@
             // Handle network errors or other exceptions
         }
       },
+      
       async getTransactionPending() {
         try {
           const myData = {
@@ -698,7 +774,8 @@
               this.existShift = false;
           }if(data.status === "add"){
             console.log("DATA ADD Start SHIft"+JSON.stringify(data));
-              setCookie("pos_id",this.exist_pos);
+              setCookie("pos_id",data.data);
+              setCookie("prefix","POS");
               setCookie("session_pos",this.exist_sessionPos);
               setCookie("start_time",this.exist_startTime);
               setCookie("store",JSON.stringify(this.exist_store));
@@ -833,7 +910,7 @@
             if(data.status === "success"){
               this.clear();
               this.initialData();
-              this.closeHPForm();
+              this.closeAllForm();
               this.chooseMenu("table");
             }else{
               Swal.fire({
@@ -853,6 +930,107 @@
             console.error('Error:', error);
         }
       },
+      async formClosing() {
+                   Swal.fire({
+                  title: 'Periksa Terlebih dahulu Data Tutup Cashier ? ',
+                  text: "Silahkan tekan tombol Lanjutkan atau batalkan",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Lanjutkan',
+                  cancelButtonText: 'Batalkan'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    this.processClosing();
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        this.closeCashier = false;
+                      }
+                  });
+  
+      },
+      // FUNCTION GET DETAIL AMOUNT TRANSACTION//
+      async getDetailAmountTransaction($id) {
+        const endpoint = 'http://localhost:8080/posmain/getSummaryTransaction/'+$id; // Or any other specific endpoint
+        const fullURL = `${endpoint}`;
+        const response = await fetch(fullURL);
+        const get = await response.json();
+        const data = get.transactions;
+        this.Total_Transaction = data.Total_Transaction;
+        this.Amount_Transaction = data.Amount_Transaction;
+        this.Total_Card = data.Total_Card;
+        this.Total_Cash = data.Total_Cash;
+        this.Total_Bank_Transfer = data.Total_Bank_Transfer;
+        this.Total_Pending = data.Total_Pending;
+        this.Amount_Card = data.Amount_Card;
+        this.Amount_Cash = data.Amount_Cash;
+        this.Amount_Bank_Transfer = data.Amount_Bank_Transfer;
+        this.Amount_Pending = data.Amount_Pending;
+        console.log("Detail Amount Transaction "+JSON.stringify(data));
+      },
+
+      async processClosing(){
+        try {
+          const myData = {
+              pos_id:this.pos_id,
+              store: this.store,
+              shift:this.shift,
+              user:this.user,
+              session:getCookie('session_pos'),
+              close_at:getBaseDate(),
+              closing_amount:this.total_closing,
+              note:this.note_closing,
+              total_cash:this.input_closing_cash,
+              total_card:this.input_closing_card,
+              total_bank_transfer:this.input_closing_banktransfer
+            };
+            const csrfToken = document.querySelector('meta[name="X-CSRF-TOKEN"]').getAttribute('content');
+            const response = await fetch(this.urlServer+'posmain/closeShift', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                      'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify(myData) // Send your data as JSON
+            });
+            if (!response.ok) {
+                // Handle HTTP errors
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log(data);
+            if(data.status === "success"){
+              this.clear();
+              this.closeAllForm();
+              document.cookie = "pos_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "session_pos=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "store=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "store_setup=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "business=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "shift=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "start_time=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "prefix=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "amount_opening=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              window.location.replace('/'+data.redirect);
+            }else{
+              Swal.fire({
+                  title: 'Terjadi masalah dengan system',
+                  text: "Hubungi administrator untuk lebih lanjut",
+                  icon: 'warning',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'OK'
+              }).then((result) => {
+                  if (result.isConfirmed) {  
+                  }
+              });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+      }
     }
     return app;
   }
@@ -887,8 +1065,3 @@
       deleteProduct: async (product) => await db.delete("products", product.id),
     };
   }
-
-
-
-//Function
-

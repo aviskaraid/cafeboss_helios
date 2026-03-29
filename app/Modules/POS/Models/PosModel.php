@@ -14,7 +14,7 @@ class PosModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ["business_id","store_id","user_id","status","shift","open_at",
+    protected $allowedFields = ["business_id","store_id","user_id","status","shift","open_at","closed_by",
                                 "opening_amount","close_at","closing_amount","total_cash","total_card","total_transfer",
                                 "closing_note","created_by","updated_by","deleted_by","session_pos"];
 
@@ -117,4 +117,6 @@ class PosModel extends Model
         $result = $builder->get()->getResultArray();
         return $result;
     }
+
+    
 }

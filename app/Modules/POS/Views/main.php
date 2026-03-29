@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-blue-gray-50" x-data="initApp()" x-init="initDatabase()">
-  <div class="hide-print bg-gray-200 flex flex-col md:flex-row h-screen antialiased text-blue-gray-800">
+    <div class="hide-print bg-gray-200 flex flex-col md:flex-row h-screen antialiased text-blue-gray-800">
         <div class="flex flex-row w-auto flex-shrink-0 pl-2 pr-2 py-2">
             <div class="flex flex-col items-center py-4 flex-shrink-0 w-20 bg-cyan-500 rounded-3xl">
                 <a href="#" x-on:click=""
@@ -58,8 +58,23 @@
                         </span>
                         </a>
                     </li>
+                     <li>
+                        <a href="#" x-on:click="reUpdateProducts()"
+                        class="flex items-center">
+                            <span class="flex items-center justify-center text-cyan-100 hover:bg-cyan-400 h-12 w-12 rounded-2xl">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.37756 11.6296H6.62756H7.37756ZM7.37756 12.5556L6.81609 13.0528C6.95137 13.2056 7.14306 13.2966 7.34695 13.3049C7.55084 13.3133 7.74932 13.2382 7.89662 13.0969L7.37756 12.5556ZM9.51905 11.5414C9.81805 11.2547 9.82804 10.7799 9.54137 10.4809C9.2547 10.182 8.77994 10.172 8.48095 10.4586L9.51905 11.5414ZM6.56148 10.5028C6.28686 10.1927 5.81286 10.1639 5.50277 10.4385C5.19267 10.7131 5.16391 11.1871 5.43852 11.4972L6.56148 10.5028ZM14.9317 9.0093C15.213 9.31337 15.6875 9.33184 15.9915 9.05055C16.2956 8.76927 16.3141 8.29476 16.0328 7.9907L14.9317 9.0093ZM12.0437 6.25C9.05802 6.25 6.62756 8.653 6.62756 11.6296H8.12756C8.12756 9.49251 9.87531 7.75 12.0437 7.75V6.25ZM6.62756 11.6296L6.62756 12.5556H8.12756L8.12756 11.6296H6.62756ZM7.89662 13.0969L9.51905 11.5414L8.48095 10.4586L6.85851 12.0142L7.89662 13.0969ZM7.93904 12.0583L6.56148 10.5028L5.43852 11.4972L6.81609 13.0528L7.93904 12.0583ZM16.0328 7.9907C15.0431 6.9209 13.6212 6.25 12.0437 6.25V7.75C13.1879 7.75 14.2154 8.23504 14.9317 9.0093L16.0328 7.9907Z" fill="#ffffff"></path> 
+                            <path d="M16.6188 11.4443L17.1795 10.9462C17.044 10.7937 16.8523 10.703 16.6485 10.6949C16.4447 10.6868 16.2464 10.7621 16.0993 10.9034L16.6188 11.4443ZM14.4805 12.4581C14.1817 12.745 14.1722 13.2198 14.4591 13.5185C14.746 13.8173 15.2208 13.8269 15.5195 13.54L14.4805 12.4581ZM17.4393 13.4972C17.7144 13.8068 18.1885 13.8348 18.4981 13.5597C18.8078 13.2846 18.8358 12.8106 18.5607 12.5009L17.4393 13.4972ZM9.04688 15.0047C8.76342 14.7027 8.28879 14.6876 7.98675 14.9711C7.68472 15.2545 7.66966 15.7292 7.95312 16.0312L9.04688 15.0047ZM11.9348 17.7499C14.9276 17.7499 17.3688 15.3496 17.3688 12.3703H15.8688C15.8688 14.5047 14.1158 16.2499 11.9348 16.2499V17.7499ZM17.3688 12.3703V11.4443H15.8688V12.3703H17.3688ZM16.0993 10.9034L14.4805 12.4581L15.5195 13.54L17.1383 11.9853L16.0993 10.9034ZM16.0581 11.9425L17.4393 13.4972L18.5607 12.5009L17.1795 10.9462L16.0581 11.9425ZM7.95312 16.0312C8.94543 17.0885 10.3635 17.7499 11.9348 17.7499V16.2499C10.792 16.2499 9.76546 15.7704 9.04688 15.0047L7.95312 16.0312Z" fill="#ffffff"></path> 
+                            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                            </span>
+                        </a>
+                    </li>
                 </ul>
-                <a href="#" x-on:click = "" class="mt-auto flex items-center justify-center text-cyan-200 hover:text-cyan-100 h-10 w-10 focus:outline-none">
+                <a
+                    href="#"
+                    x-on:click = "OpenRegisterDetail"
+                    class="mt-auto flex items-center justify-center text-cyan-200 hover:text-cyan-100 h-10 w-10 focus:outline-none"
+                >
                     <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
                         <path d="M4 21C4 17.4735 6.60771 14.5561 10 14.0709M19.8726 15.2038C19.8044 15.2079 19.7357 15.21 19.6667 15.21C18.6422 15.21 17.7077 14.7524 17 14C16.2923 14.7524 15.3578 15.2099 14.3333 15.2099C14.2643 15.2099 14.1956 15.2078 14.1274 15.2037C14.0442 15.5853 14 15.9855 14 16.3979C14 18.6121 15.2748 20.4725 17 21C18.7252 20.4725 20 18.6121 20 16.3979C20 15.9855 19.9558 15.5853 19.8726 15.2038ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -69,6 +84,7 @@
                 </a>
             </div>
         </div>
+        <!-- TABLE MENU -->
         <div x-show="activeMenu==='table'" class="min-h-screen w-screen grid grid-cols-6 pl-2 pr-2 py-2 gap-2">
             <div class="flex-grow overflow-y-auto thin-scrollbar bg-white col-span-6 p-2 -ml-2 rounded-2xl">
                 <div class="flex antialiased">
@@ -160,6 +176,8 @@
                 </div>
             </div>
         </div>
+        <!-- END TABLE MENU -->
+        <!-- POS MENU -->
         <div x-show="activeMenu==='pos'" class="min-h-screen w-screen grid grid-cols-6 pl-2 pr-2 py-2 gap-2">
             <!-- start Col 1 -->
             <div class="flex-grow overflow-y-auto thin-scrollbar bg-white col-span-3 p-2 -ml-2 rounded-2xl">
@@ -430,79 +448,81 @@
             </div>
             <!-- end Col 3 -->
         </div>
-        </div>
-        <div x-show="firstBalance" 
-            class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
-            <div
-                x-show="firstBalance"
-                class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalBalance()"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-            ></div>
-            <div
-                x-show="firstBalance"
-                class="w-2/5 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90">
-                <div id="display" class="text-left w-full text-sm p-6 overflow-auto">
-                    <div class="text-center">
-                        <img src="<?=base_url()?>pos/img/receipt-logo.png" alt="Zax Resto" class="mb-3 w-8 h-8 inline-block">
-                    <h3 class="text-center text-2xl mb-4">Opening Balance</h3>
-                    </div>
-                    <hr class="my-4 border-t-2 border-gray-300">
-                    <!-- Choose Store -->
-                    <div class="flex antialiased w-full">
-                        <div class="px-2 pb-2 pl-2 pr-2 overflow-auto justify-center">
-                            <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Choose Store : </h3>
-                            <div class="flex justify-left items-center mb-4">
-                                <select class="choose_branch w-screen h-32" id="choose_branch" x-show="openingStoreList().length" x-on:change="chooseStore($event.target.value)">
-                                    <option></option>    
-                                    <template x-for="item in openingStoreList()" :key="item.id">
-                                        <option :value="item.id" x-text="item.description">
-                                        </option>
-                                    </template>
-                                </select>
-                            </div>
-                            <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Choose Shift : </h3>
-                            <div class="flex justify-left items-center mb-4">
-                                <select class="choose_shift w-screen" id="choose_shift" name="shift" x-on:change="chooseShift($event.target.value)">
-                                    <option></option>
-                                    <option value="1">Shift 1</option>
-                                    <option value="2">Shift 2</option>
-                                    <option value="3">Shift 3</option>
-                                </select>
-                            </div>
-                            <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Amount Balance : </h3>
-                            <div class="flex justify-center items-center mb-4">
-                                <div class="flex w-full">
-                                    <div class="mr-2 p-2">Rp</div>
-                                    <input x-bind:value="numberFormat(params_balance)" x-on:keyup="setOpeningBalance($event.target.value)" type="text" class="w-full text-left bg-gray-50 shadow rounded-lg focus:bg-gray-100 focus:shadow-lg px-2 focus:outline-none p-2">
-                                </div>
+        <!-- END POS MENU -->
+    </div>
+    <!-- MODAL FIRST BALANCE -->
+    <div x-show="firstBalance" 
+        class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
+        <div
+            x-show="firstBalance"
+            class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalBalance()"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+            x-show="firstBalance"
+            class="w-2/5 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90">
+            <div id="display" class="text-left w-full text-sm p-6 overflow-auto">
+                <div class="text-center" x-data="{ imgsrc: '<?= $image_logo ?>' }">
+                    <img :src="imgsrc" alt="Zax Resto" class="mb-3 w-24 h-14 inline-block">
+                <h3 class="text-center text-2xl mb-4">Opening Balance</h3>
+                </div>
+                <hr class="my-4 border-t-2 border-gray-300">
+                <!-- Choose Store -->
+                <div class="flex antialiased w-full">
+                    <div class="px-2 pb-2 pl-2 pr-2 overflow-auto justify-center">
+                        <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Choose Store : </h3>
+                        <div class="flex justify-left items-center mb-4">
+                            <select class="choose_branch w-screen h-32" id="choose_branch" x-show="openingStoreList().length" x-on:change="chooseStore($event.target.value)">
+                                <option></option>    
+                                <template x-for="item in openingStoreList()" :key="item.id">
+                                    <option :value="item.id" x-text="item.description">
+                                    </option>
+                                </template>
+                            </select>
+                        </div>
+                        <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Choose Shift : </h3>
+                        <div class="flex justify-left items-center mb-4">
+                            <select class="choose_shift w-screen" id="choose_shift" name="shift" x-on:change="chooseShift($event.target.value)">
+                                <option></option>
+                                <option value="1">Shift 1</option>
+                                <option value="2">Shift 2</option>
+                                <option value="3">Shift 3</option>
+                            </select>
+                        </div>
+                        <h3 class="text-left text-sm mb-2 text-gray-600 font-semibold">Amount Balance : </h3>
+                        <div class="flex justify-center items-center mb-4">
+                            <div class="flex w-full">
+                                <div class="mr-2 p-2">Rp</div>
+                                <input x-bind:value="numberFormat(params_balance)" x-on:keyup="setOpeningBalance($event.target.value)" type="text" class="w-full text-left bg-gray-50 shadow rounded-lg focus:bg-gray-100 focus:shadow-lg px-2 focus:outline-none p-2">
                             </div>
                         </div>
                     </div>
-                    <!-- Choose Store -->
                 </div>
-                <div class="p-4 w-full">
-                <button x-on:click="submitOpeningStore()" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Submit</button>
-                </div>
+                <!-- Choose Store -->
+            </div>
+            <div class="p-4 w-full">
+            <button x-on:click="submitOpeningStore()" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Submit</button>
             </div>
         </div>
-        <div x-show="existShift" 
+    </div>
+    <!-- END MODAL FIRST BALANCE --> 
+    <!-- MODAL EXIST SHIFT -->
+    <div x-show="existShift" 
             class="fixed glass w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
         <div class="w-96 rounded-3xl p-8 bg-white shadow-xl">
-            <div class="text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block" width="123.3" height="123.233" viewBox="0 0 32.623 32.605">
-                <path d="M15.612 0c-.36.003-.705.01-1.03.021C8.657.223 5.742 1.123 3.4 3.472.714 6.166-.145 9.758.019 17.607c.137 6.52.965 9.271 3.542 11.768 1.31 1.269 2.658 2 4.73 2.57.846.232 2.73.547 3.56.596.36.021 2.336.048 4.392.06 3.162.018 4.031-.016 5.63-.221 3.915-.504 6.43-1.778 8.234-4.173 1.806-2.396 2.514-5.731 2.516-11.846.001-4.407-.42-7.59-1.278-9.643-1.463-3.501-4.183-5.53-8.394-6.258-1.634-.283-4.823-.475-7.339-.46z" fill="#fff"/><path d="M16.202 13.758c-.056 0-.11 0-.16.003-.926.031-1.38.172-1.747.538-.42.421-.553.982-.528 2.208.022 1.018.151 1.447.553 1.837.205.198.415.313.739.402.132.036.426.085.556.093.056.003.365.007.686.009.494.003.63-.002.879-.035.611-.078 1.004-.277 1.286-.651.282-.374.392-.895.393-1.85 0-.688-.066-1.185-.2-1.506-.228-.547-.653-.864-1.31-.977a7.91 7.91 0 00-1.147-.072zM16.22 19.926c-.056 0-.11 0-.16.003-.925.031-1.38.172-1.746.539-.42.42-.554.981-.528 2.207.02 1.018.15 1.448.553 1.838.204.198.415.312.738.4.132.037.426.086.556.094.056.003.365.007.686.009.494.003.63-.002.88-.034.61-.08 1.003-.278 1.285-.652.282-.374.393-.895.393-1.85 0-.688-.066-1.185-.2-1.506-.228-.547-.653-.863-1.31-.977a7.91 7.91 0 00-1.146-.072zM22.468 13.736c-.056 0-.11.001-.161.003-.925.032-1.38.172-1.746.54-.42.42-.554.98-.528 2.207.021 1.018.15 1.447.553 1.837.205.198.415.313.739.401.132.037.426.086.556.094.056.003.364.007.685.009.494.003.63-.002.88-.035.611-.078 1.004-.277 1.285-.651.282-.375.393-.895.393-1.85 0-.688-.065-1.185-.2-1.506-.228-.547-.653-.864-1.31-.977a7.91 7.91 0 00-1.146-.072z" fill="#00dace"/><path d="M9.937 13.736c-.056 0-.11.001-.161.003-.925.032-1.38.172-1.746.54-.42.42-.554.98-.528 2.207.021 1.018.15 1.447.553 1.837.204.198.415.313.738.401.133.037.427.086.556.094.056.003.365.007.686.009.494.003.63-.002.88-.035.61-.078 1.003-.277 1.285-.651.282-.375.393-.895.393-1.85 0-.688-.066-1.185-.2-1.506-.228-.547-.653-.864-1.31-.977a7.91 7.91 0 00-1.146-.072zM16.202 7.59c-.056 0-.11 0-.16.002-.926.032-1.38.172-1.747.54-.42.42-.553.98-.528 2.206.022 1.019.151 1.448.553 1.838.205.198.415.312.739.401.132.037.426.086.556.093.056.003.365.007.686.01.494.002.63-.003.879-.035.611-.079 1.004-.278 1.286-.652.282-.374.392-.895.393-1.85 0-.688-.066-1.185-.2-1.505-.228-.547-.653-.864-1.31-.978a7.91 7.91 0 00-1.147-.071z" fill="#00bcd4"/><g><path d="M15.612 0c-.36.003-.705.01-1.03.021C8.657.223 5.742 1.123 3.4 3.472.714 6.166-.145 9.758.019 17.607c.137 6.52.965 9.271 3.542 11.768 1.31 1.269 2.658 2 4.73 2.57.846.232 2.73.547 3.56.596.36.021 2.336.048 4.392.06 3.162.018 4.031-.016 5.63-.221 3.915-.504 6.43-1.778 8.234-4.173 1.806-2.396 2.514-5.731 2.516-11.846.001-4.407-.42-7.59-1.278-9.643-1.463-3.501-4.183-5.53-8.394-6.258-1.634-.283-4.823-.475-7.339-.46z" fill="#fff"/><path d="M16.202 13.758c-.056 0-.11 0-.16.003-.926.031-1.38.172-1.747.538-.42.421-.553.982-.528 2.208.022 1.018.151 1.447.553 1.837.205.198.415.313.739.402.132.036.426.085.556.093.056.003.365.007.686.009.494.003.63-.002.879-.035.611-.078 1.004-.277 1.286-.651.282-.374.392-.895.393-1.85 0-.688-.066-1.185-.2-1.506-.228-.547-.653-.864-1.31-.977a7.91 7.91 0 00-1.147-.072zM16.22 19.926c-.056 0-.11 0-.16.003-.925.031-1.38.172-1.746.539-.42.42-.554.981-.528 2.207.02 1.018.15 1.448.553 1.838.204.198.415.312.738.4.132.037.426.086.556.094.056.003.365.007.686.009.494.003.63-.002.88-.034.61-.08 1.003-.278 1.285-.652.282-.374.393-.895.393-1.85 0-.688-.066-1.185-.2-1.506-.228-.547-.653-.863-1.31-.977a7.91 7.91 0 00-1.146-.072zM22.468 13.736c-.056 0-.11.001-.161.003-.925.032-1.38.172-1.746.54-.42.42-.554.98-.528 2.207.021 1.018.15 1.447.553 1.837.205.198.415.313.739.401.132.037.426.086.556.094.056.003.364.007.685.009.494.003.63-.002.88-.035.611-.078 1.004-.277 1.285-.651.282-.375.393-.895.393-1.85 0-.688-.065-1.185-.2-1.506-.228-.547-.653-.864-1.31-.977a7.91 7.91 0 00-1.146-.072z" fill="#00dace"/><path d="M9.937 13.736c-.056 0-.11.001-.161.003-.925.032-1.38.172-1.746.54-.42.42-.554.98-.528 2.207.021 1.018.15 1.447.553 1.837.204.198.415.313.738.401.133.037.427.086.556.094.056.003.365.007.686.009.494.003.63-.002.88-.035.61-.078 1.003-.277 1.285-.651.282-.375.393-.895.393-1.85 0-.688-.066-1.185-.2-1.506-.228-.547-.653-.864-1.31-.977a7.91 7.91 0 00-1.146-.072zM16.202 7.59c-.056 0-.11 0-.16.002-.926.032-1.38.172-1.747.54-.42.42-.553.98-.528 2.206.022 1.019.151 1.448.553 1.838.205.198.415.312.739.401.132.037.426.086.556.093.056.003.365.007.686.01.494.002.63-.003.879-.035.611-.079 1.004-.278 1.286-.652.282-.374.392-.895.393-1.85 0-.688-.066-1.185-.2-1.505-.228-.547-.653-.864-1.31-.978a7.91 7.91 0 00-1.147-.071z" fill="#00bcd4"/></g>
-            </svg>
+            <div class="text-center" x-data="{ imgsrc: '<?= $image_logo ?>' }">
+            <img :src="imgsrc" alt="Zax Resto" class="mb-3 w-24 h-14 inline-block">
                 <h3 class="text-center text-xl mb-2">Data Shift anda masih terbuka</h3>
                 <h3 class="text-center text-sm mb-8">Silahkan melanjutkan atau tutup terlebih dahulu.!</h3>
             </div>
@@ -547,295 +567,573 @@
             </button>
             </div>
         </div>
-        </div>
-        <div x-show="isShowHoldAndPay"
-            class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
-            <div x-show="isShowHoldAndPay"
-                class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalReceipt()"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-            ></div>
-            <div
-                x-show="isShowHoldAndPay"
-                class="w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90"
-            >
-                <div id="receipt-content" class="text-left w-full text-sm p-6 overflow-auto">
-                    <div class="text-center">
-                        <img src="" class="mb-3 w-8 h-8 inline-block">
-                        <h2 class="text-xl font-semibold" x-text="business!=null?business.display_name:'Business'"></h2>
-                        <p x-text="store?store.display_name:'Store'"></p>
-                    </div>
-                    <div class="flex mt-4 text-xs">
-                        <div class="flex-grow">Cashier: <span x-text="user.fullname"></span></div>
-                    <div x-text="receiptDate"></div>
-                    </div>
-                    <div class="flex mt-1 text-xs">
-                        <div class="flex-grow">No: <span x-text="receiptNo"></span></div>
-                        <div class="text-right">Customer: <span x-text="member.fullname=='General'?'General':member.fullname"></span></div>
-                </div>
-                <hr class="my-2">
-                <div>
-                    <table class="w-full text-xs">
-                    <thead>
-                        <tr>
-                        <th class="py-1 w-1/12 text-center">#</th>
-                        <th class="py-1 text-left">Item</th>
-                        <th class="py-1 w-2/12 text-center">Qty</th>
-                        <th class="py-1 w-3/12 text-right">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template x-for="(item, index) in cart" :key="item">
-                            <tr>
-                            <td class="py-2 text-center" x-text="index+1"></td>
-                            <td class="py-2 text-left">
-                            <span x-text="item.name"></span>
-                            <br/>
-                            <small x-text="priceFormat(item.price)"></small>
-                            </td>
-                            <td class="py-2 text-center" x-text="item.qty"></td>
-                            <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price)"></td>
-                        </tr>
-                        </template>
-                    </tbody>
-                    </table>
-                </div>
-                <hr class="my-2">
-                <div>
-                    <div class="flex font-semibold">
-                    <div class="flex-grow">SubTotal</div>
-                    <div x-text="priceFormat(subTotal)"></div>
-                    </div>
-                    <div class="flex font-semibold">
-                    <div class="flex-grow">Disc %</div>
-                    <div x-text="priceFormat(disc)"></div>
-                    </div>
-                    <div class="flex font-semibold">
-                    <div class="flex-grow">TOTAL</div>
-                    <div x-text="priceFormat(getTotalPrice())"></div>
-                    </div>
-                    <div class="flex text-xs font-semibold">
-                    <div class="flex-grow">PAY AMOUNT</div>
-                    <div x-text="priceFormat(cash)"></div>
-                    </div>
-                    <hr class="my-2">
-                    <div class="flex text-xs font-semibold">
-                    <div class="flex-grow">CHANGE</div>
-                    <div x-text="priceFormat(change)"></div>
-                    </div>
-                </div>
-                </div>
-                <div class="flex p-4 gap-2 w-full">
-                <button class=" flex-grow bg-pink-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="submitToPayForm()">PAY</button>
-                <button class="bg-cyan-500 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none"
-                x-bind:class="{'bg-cyan-500 hover:bg-cyan-600': submitHoldOrder(),'bg-blue-gray-200': !submitHoldOrder()}"
-                :disabled="!submitHoldOrder()"
-                x-on:click="submitToOrder(true)"
-                >HOLD</button>
-                </div>
-                <div class="p-4 gap-2 w-full">
-                <button class=" bg-gray-200 text-gray-400 text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="closeHPForm()">Close</button>
-                </div>
-            </div>
-        </div>
-        <div x-show="isShowPayForm"
-            class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
-            <div
-                x-show="isShowPayForm"
-                class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalPayMethod()"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-            ></div>
-            <div
-                x-show="isShowPayForm"
-                class="w-2/5 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90"
-            >
-                <div id="display" class="text-left w-full text-sm p-6 overflow-auto">
-                    <div class="text-center">
-                        <img src="img/receipt-logo.png" alt="Zax Resto" class="mb-3 w-8 h-8 inline-block">
-                    <h3 class="text-center text-2xl mb-4">Payment</h3>
-                    </div>
-                    <hr class="my-2">
-                    <div class="flex flex-col antialiased">
-                        <div class="flex justify-center">
-                                <div class="flex pl-2 mt-4">
-                                    <select class="choose_paymethod w-56" id="choose_paymethod" name="pay_method" x-on:change="choosePaymentMethod($event.target.value)">
-                                        <option></option>
-                                        <option value="cash" :selected="payMethod==='cash'">Cash</option>
-                                        <option value="debit" :selected="payMethod==='debit'">Debit</option>
-                                        <option value="bank_transfer" :selected="payMethod==='bank_transfer'">Bank Transfer</option>
-                                    </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div x-show="payMethod==='cash'" class="grid grid-cols-3 gap-2 mt-2">
-                        <template x-for="money in moneys">
-                        <button x-on:click="addCash(money)" class="bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">+<span x-text="numberFormat(money)"></span></button>
-                        </template>
-                    </div>
-                    <div x-show="payMethod==='debit'" class="grid grid-cols-2 gap-2 mt-4 text-base">
-                        <div class="flex">
-                            <select class="choose_bank_2 w-48 px-2 mt-2" id="choose_bank_2" name="bank_account" x-on:change="chooseBank($event.target.value)">
-                                <option></option>
-                                <option value="bca">BCA</option>
-                                <option value="mandiri">Mandiri</option>
-                                <option value="bni">BNI</option>
-                                <option value="bri">BRI</option>
-                                <option value="cimb">CIMB Niaga</option>
-                                <option value="permata">Permata</option>
-                                <option value="mega">Mega</option>
-                                
-                            </select>
-                        </div>
-                        <input type="text" placeholder="Transaction Number" x-on:keyup="setTransactionNumber($event.target.value)" class="h-10 bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">
-                    </div>
-                    <div x-show="payMethod==='bank_transfer'" class="grid grid-cols-2 gap-2 mt-4 text-base">
-                        <input type="text" placeholder="Account Name" x-on:keyup="setAccountName($event.target.value)" class="h-10 bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">
-                        <input type="text" placeholder="Account Number"x-on:keyup="setAccountNumber($event.target.value)" class="h-10 bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">
-                         <div class="flex">
-                            <select class="choose_bank w-48 px-2" id="choose_bank" name="bank_account" x-on:change="chooseBank($event.target.value)">
-                                <option></option>
-                                <option value="bca">BCA</option>
-                                <option value="mandiri">Mandiri</option>
-                                <option value="bni">BNI</option>
-                                <option value="bri">BRI</option>
-                                <option value="cimb">CIMB Niaga</option>
-                                <option value="permata">Permata</option>
-                                <option value="mega">Mega</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex mt-4 justify-between items-center text-lg font-semibold">
-                        <div class="flex-grow text-left">
-                            <p>Amount</p>
-                        </div>
-                        <div class="flex text-right">
-                            <div class="mr-2">Rp</div>
-                            <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="w-28 text-right bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
-                        </div>
-                    </div>
-                    <div class="flex mt-4 justify-between items-center text-lg font-semibold">
-                        <div class="flex-grow text-left">
-                            <p>SubTotal</p>
-                        </div>
-                        <div class="flex text-right">
-                            <div
-                                :class="(cash<subTotal || cash === 0)?'text-right flex-grow text-pink-500':'text-right flex-grow text-cyan-500'"
-                                x-text="priceFormat(subTotal)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex mt-4 justify-between items-center text-lg font-semibold">
-                        <div class="flex-grow text-left">
-                            <p>Changes</p>
-                        </div>
-                        <div class="flex text-right">
-                            <div
-                                class="text-right flex-grow text-cyan-600"
-                                x-text="priceFormat(change)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4 -mt-2 w-full">
-                <button x-on:click="submitToOrder(false)" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Submit</button>
-                </div>
-                <div class="p-4 gap-2 w-full">
-                <button class=" bg-gray-200 text-gray-400 text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="closeAllForm()">Close</button>
-                </div>
-            </div>
-        </div>
-        <!--- ADD-->
-        <!-- modal member Input -->
-        <div x-show="isShowMember"
+    </div>
+    <!-- END MODAL EXIST SHIFT -->
+    <!-- MODAL HOLD AND PAY -->
+    <div x-show="isShowHoldAndPay"
         class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
-            <div
-                x-show="isShowMember"
-                class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalMember()"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-            ></div>
-            <div
-                x-show="isShowMember"
-                class="w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90"
-            >
-                <div id="table-content" class="text-left h-full text-sm p-6">
-                    <div class="text-center">
-                        <img src="" alt="Zax Resto" class="mb-3 w-8 h-8 inline-block">
-                        <h2 class="text-xl font-semibold">List Of Member</h2>
-                        <h2 class="text-base text-cyan-500">Choose an Member</h2>
-                    </div>
-                    <hr class="my-2">
-                    <div class="flex antialiased">
-                    <div class="w-full px-2 pb-2 pl-2 pr-2 overflow-auto">
-                        <div class="w-full basis-2/3 relative p-2 ">
-                                    <div class="absolute left-5 top-5 px-2 py-2 rounded-full bg-cyan-500 text-white">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                        </svg>
-                                    </div>
-                                    <input 
-                                        type="text"
-                                        class="bg-white rounded-2xl shadow-md text-lg full w-full h-12 py-4 pl-16 transition-shadow focus:shadow-xl focus:outline-none"
-                                        placeholder="Cari Member ..."
-                                        x-model="keywordMember"
-                                    /> 
-                                </div>
-                        <div x-show="filteredMembers().length" class="overflow-x-auto whitespace-nowrap mb-3 thin-scrollbar">
-                            <template x-for="mbr in filteredMembers()" :key="mbr.id">
-                                <div role="button"
-                                :class="'rounded-xl shadow-lg bg-cyan-300 border border-gray-400 py-2 mb-3 hover:bg-cyan-400 hover:text-white focus:outline-none text-gray'"
-                                :title="mbr.name"
-                                x-on:click="chooseMember(this,mbr)">
-                                <div class="flex font-semibold pl-2 pr-2">
-                                    <div class="flex-grow text-white text-base font-medium">Email</div>
-                                    <div class="text-white text-base font-medium "  x-text="mbr.email"></div>
-                                </div>
-                                <div class="flex font-semibold pl-2 pr-2">
-                                    <div class="flex-grow text-white text-base font-medium">Name</div>
-                                    <div class="text-white text-base font-medium"  x-text="mbr.fullname"></div>
-                                </div>
-                            </template>
+        <div x-show="isShowHoldAndPay"
+            class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalReceipt()"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+            x-show="isShowHoldAndPay"
+            class="w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90"
+        >
+            <div id="receipt-content" class="text-left w-full text-sm p-6 overflow-auto">
+                <div class="text-center">
+                    <img src="" class="mb-3 w-8 h-8 inline-block">
+                    <h2 class="text-xl font-semibold" x-text="business!=null?business.display_name:'Business'"></h2>
+                    <p x-text="store?store.display_name:'Store'"></p>
+                </div>
+                <div class="flex mt-4 text-xs">
+                    <div class="flex-grow">Cashier: <span x-text="user.fullname"></span></div>
+                <div x-text="receiptDate"></div>
+                </div>
+                <div class="flex mt-1 text-xs">
+                    <div class="flex-grow">No: <span x-text="receiptNo"></span></div>
+                    <div class="text-right">Customer: <span x-text="member.fullname=='General'?'General':member.fullname"></span></div>
+            </div>
+            <hr class="my-2">
+            <div>
+                <table class="w-full text-xs">
+                <thead>
+                    <tr>
+                    <th class="py-1 w-1/12 text-center">#</th>
+                    <th class="py-1 text-left">Item</th>
+                    <th class="py-1 w-2/12 text-center">Qty</th>
+                    <th class="py-1 w-3/12 text-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(item, index) in cart" :key="item">
+                        <tr>
+                        <td class="py-2 text-center" x-text="index+1"></td>
+                        <td class="py-2 text-left">
+                        <span x-text="item.name"></span>
+                        <br/>
+                        <small x-text="priceFormat(item.price)"></small>
+                        </td>
+                        <td class="py-2 text-center" x-text="item.qty"></td>
+                        <td class="py-2 text-right" x-text="priceFormat(item.qty * item.price)"></td>
+                    </tr>
+                    </template>
+                </tbody>
+                </table>
+            </div>
+            <hr class="my-2">
+            <div>
+                <div class="flex font-semibold">
+                <div class="flex-grow">SubTotal</div>
+                <div x-text="priceFormat(subTotal)"></div>
+                </div>
+                <div class="flex font-semibold">
+                <div class="flex-grow">Disc %</div>
+                <div x-text="priceFormat(disc)"></div>
+                </div>
+                <div class="flex font-semibold">
+                <div class="flex-grow">TOTAL</div>
+                <div x-text="priceFormat(getTotalPrice())"></div>
+                </div>
+                <div class="flex text-xs font-semibold">
+                <div class="flex-grow">PAY AMOUNT</div>
+                <div x-text="priceFormat(cash)"></div>
+                </div>
+                <hr class="my-2">
+                <div class="flex text-xs font-semibold">
+                <div class="flex-grow">CHANGE</div>
+                <div x-text="priceFormat(change)"></div>
+                </div>
+            </div>
+            </div>
+            <div class="flex p-4 gap-2 w-full">
+            <button class=" flex-grow bg-pink-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="submitToPayForm()">PAY</button>
+            <button class="bg-cyan-500 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none"
+            x-bind:class="{'bg-cyan-500 hover:bg-cyan-600': submitHoldOrder(),'bg-blue-gray-200': !submitHoldOrder()}"
+            :disabled="!submitHoldOrder()"
+            x-on:click="submitToOrder(true)"
+            >HOLD</button>
+            </div>
+            <div class="p-4 gap-2 w-full">
+            <button class=" bg-gray-200 text-gray-400 text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="closeHPForm()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL HOLD AND PAY -->
+    <!-- MODAL PAYMENT METHOD -->
+    <div x-show="isShowPayForm"
+        class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
+        <div
+            x-show="isShowPayForm"
+            class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalPayMethod()"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+            x-show="isShowPayForm"
+            class="w-2/5 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90"
+        >
+            <div id="display" class="text-left w-full text-sm p-6 overflow-auto">
+                <div class="text-center">
+                    <img src="img/receipt-logo.png" alt="Zax Resto" class="mb-3 w-8 h-8 inline-block">
+                <h3 class="text-center text-2xl mb-4">Payment</h3>
+                </div>
+                <hr class="my-2">
+                <div class="flex flex-col antialiased">
+                    <div class="flex justify-center">
+                            <div class="flex pl-2 mt-4">
+                                <select class="choose_paymethod w-56" id="choose_paymethod" name="pay_method" x-on:change="choosePaymentMethod($event.target.value)">
+                                    <option></option>
+                                    <option value="cash" :selected="payMethod==='cash'">Cash</option>
+                                    <option value="card" :selected="payMethod==='card'">Card</option>
+                                    <option value="bank_transfer" :selected="payMethod==='bank_transfer'">Bank Transfer</option>
+                                </select>
                         </div>
                     </div>
+                </div>
+                <div x-show="payMethod==='cash'" class="grid grid-cols-3 gap-2 mt-2">
+                    <template x-for="money in moneys">
+                    <button x-on:click="addCash(money)" class="bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">+<span x-text="numberFormat(money)"></span></button>
+                    </template>
+                </div>
+                <div x-show="payMethod==='card'" class="grid grid-cols-2 gap-2 mt-4 text-base">
+                    <div class="flex">
+                        <select class="choose_bank_2 w-48 px-2 mt-2" id="choose_bank_2" name="bank_account" x-on:change="chooseBank($event.target.value)">
+                            <option></option>
+                            <option value="bca">BCA</option>
+                            <option value="mandiri">Mandiri</option>
+                            <option value="bni">BNI</option>
+                            <option value="bri">BRI</option>
+                            <option value="cimb">CIMB Niaga</option>
+                            <option value="permata">Permata</option>
+                            <option value="mega">Mega</option>
+                            
+                        </select>
+                    </div>
+                    <input type="text" placeholder="Transaction Number" x-on:keyup="setTransactionNumber($event.target.value)" class="h-10 bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">
+                </div>
+                <div x-show="payMethod==='bank_transfer'" class="grid grid-cols-2 gap-2 mt-4 text-base">
+                    <input type="text" placeholder="Account Name" x-on:keyup="setAccountName($event.target.value)" class="h-10 bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">
+                    <input type="text" placeholder="Account Number"x-on:keyup="setAccountNumber($event.target.value)" class="h-10 bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-base font-medium">
+                        <div class="flex">
+                        <select class="choose_bank w-48 px-2" id="choose_bank" name="bank_account" x-on:change="chooseBank($event.target.value)">
+                            <option></option>
+                            <option value="bca">BCA</option>
+                            <option value="mandiri">Mandiri</option>
+                            <option value="bni">BNI</option>
+                            <option value="bri">BRI</option>
+                            <option value="cimb">CIMB Niaga</option>
+                            <option value="permata">Permata</option>
+                            <option value="mega">Mega</option>
+                        </select>
                     </div>
                 </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow text-left">
+                        <p>Amount</p>
+                    </div>
+                    <div class="flex text-right">
+                        <div class="mr-2">Rp</div>
+                        <input x-bind:value="numberFormat(cash)" x-on:keyup="updateCash($event.target.value)" type="text" class="w-28 text-right bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow text-left">
+                        <p>SubTotal</p>
+                    </div>
+                    <div class="flex text-right">
+                        <div
+                            :class="(cash<subTotal || cash === 0)?'text-right flex-grow text-pink-500':'text-right flex-grow text-cyan-500'"
+                            x-text="priceFormat(subTotal)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow text-left">
+                        <p>Changes</p>
+                    </div>
+                    <div class="flex text-right">
+                        <div
+                            class="text-right flex-grow text-cyan-600"
+                            x-text="priceFormat(change)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 -mt-2 w-full">
+            <button x-on:click="submitToOrder(false)" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Submit</button>
+            </div>
+            <div class="p-4 gap-2 w-full">
+            <button class=" bg-gray-200 text-gray-400 text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="closeAllForm()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL PAYMENT METHOD -->
+    <!-- MODAL CHOOSE MEMBER -->        
+    <div x-show="isShowMember"
+    class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
+        <div
+            x-show="isShowMember"
+            class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalMember()"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+            x-show="isShowMember"
+            class="w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90"
+        >
+            <div id="table-content" class="text-left h-full text-sm p-6">
+                <div class="text-center">
+                    <img src="" alt="Zax Resto" class="mb-3 w-8 h-8 inline-block">
+                    <h2 class="text-xl font-semibold">List Of Member</h2>
+                    <h2 class="text-base text-cyan-500">Choose an Member</h2>
+                </div>
+                <hr class="my-2">
+                <div class="flex antialiased">
+                <div class="w-full px-2 pb-2 pl-2 pr-2 overflow-auto">
+                    <div class="w-full basis-2/3 relative p-2 ">
+                                <div class="absolute left-5 top-5 px-2 py-2 rounded-full bg-cyan-500 text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="text"
+                                    class="bg-white rounded-2xl shadow-md text-lg full w-full h-12 py-4 pl-16 transition-shadow focus:shadow-xl focus:outline-none"
+                                    placeholder="Cari Member ..."
+                                    x-model="keywordMember"
+                                /> 
+                            </div>
+                    <div x-show="filteredMembers().length" class="overflow-x-auto whitespace-nowrap mb-3 thin-scrollbar">
+                        <template x-for="mbr in filteredMembers()" :key="mbr.id">
+                            <div role="button"
+                            :class="'rounded-xl shadow-lg bg-cyan-300 border border-gray-400 py-2 mb-3 hover:bg-cyan-400 hover:text-white focus:outline-none text-gray'"
+                            :title="mbr.name"
+                            x-on:click="chooseMember(this,mbr)">
+                            <div class="flex font-semibold pl-2 pr-2">
+                                <div class="flex-grow text-white text-base font-medium">Email</div>
+                                <div class="text-white text-base font-medium "  x-text="mbr.email"></div>
+                            </div>
+                            <div class="flex font-semibold pl-2 pr-2">
+                                <div class="flex-grow text-white text-base font-medium">Name</div>
+                                <div class="text-white text-base font-medium"  x-text="mbr.fullname"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="p-4 w-full">
+            <button x-on:click="closeModalDisc()" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="printAndProceed()">Submit</button>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL CHOOSE MEMBER -->
+    <!-- MODAL DETAIL REGISTER -->
+    <div x-show="isopenDetail"
+    class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
+    <div
+    x-show="isopenDetail"
+    class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalPosDetail()"
+    x-transition:enter="transition ease-out duration-100"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-100"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    ></div>
+    <div
+    x-show="isopenDetail"
+    class="w-2/5 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
+    x-transition:enter="transition ease-out duration-100"
+    x-transition:enter-start="opacity-0 transform scale-90"
+    x-transition:enter-end="opacity-100 transform scale-100"
+    x-transition:leave="transition ease-in duration-100"
+    x-transition:leave-start="opacity-100 transform scale-100"
+    x-transition:leave-end="opacity-0 transform scale-90"
+    >
+    <div id="displayDetail" class="text-left w-full text-sm p-6 overflow-auto">
+        <div class="text-center" x-data="{ imgsrc: '<?= $image_logo ?>' }">
+            <img :src="imgsrc" alt="Zax Resto" class="mb-3 w-24 h-14 inline-block">
+            <h3 class="text-center text-2xl mb-4">Detail Register</h3>
+        </div>
+        <hr class="my-2">
+        <div class="flex antialiased w-full">
+            <div class="w-full px-2 pb-2 pl-2 pr-2 overflow-auto justify-center">
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Name</h3>
+                        <h3 class="text-left text-base mb-2 text-cyan-500 font-semibold" x-text="user.fullname"></h3>
+                    </div>
+                    <div class="flex-grow w-2/5 text-left justify-center">
+                        <h3 class="text-center text-sm mb-2 font-semibold">Shift</h3>
+                        <h3 class="text-center text-base mb-2 text-pink-500 font-semibold" x-text="shift"></h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                            <h3 class="text-right text-sm mb-2 text-gray-600 font-semibold">Date</h3>
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text="getStartTime('date')"></h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                            <h3 class="text-right text-sm mb-2 text-gray-600 font-semibold">Start Time</h3>
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text="getStartTime('time')"></h3>
+                    </div>
+                </div>
+                <hr class="border-t-2 border-gray-300 my-4">
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Total Transaksi</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=Total_Transaction></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Transaksi</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=priceFormat(Amount_Transaction)></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Total Cash</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=Total_Cash></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Cash</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=priceFormat(Amount_Cash)></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Total Card</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=Total_Card></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Card</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=priceFormat(Amount_Card)></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Total Bank Transfer</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=Total_Bank_Transfer></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Bank Transfer</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=priceFormat(Amount_Bank_Transfer)></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Total Pending</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=Total_Pending></h3>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Pending</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <h3 class="text-right text-sm mb-2 text-pink-600 font-semibold" x-text=priceFormat(Amount_Pending)></h3>
+                    </div>
+                </div>
+                
+                <hr class="border-t-2 border-gray-300 my-2">
                 <div class="p-4 w-full">
-                <button x-on:click="closeModalDisc()" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none" x-on:click="printAndProceed()">Submit</button>
+                    <button x-on:click="submitClosingStore()" class="bg-cyan-400 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none">Tutup Kasir</button>
                 </div>
             </div>
         </div>
-        <!-- end modal member input -->
-  </div>
+    </div>
+    </div>
+    </div>
+    <!-- END MODAL DETAIL REGISTER -->
+    <!-- MODAL CLOSE BALANCE -->
+    <div x-show="closeCashier" 
+        class="fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24" x-cloak>
+        <div
+            x-show="closeCashier"
+            class="fixed glass w-full h-screen left-0 top-0 z-0" x-on:click="closeModalCloseCashier()"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        ></div>
+        <div
+            x-show="closeCashier"
+            class="w-2/5 rounded-3xl bg-white shadow-xl overflow-hidden z-10"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90">
+            <div id="display" class="text-left w-full text-sm p-6 overflow-auto">
+                <div class="text-center" x-data="{ imgsrc: '<?= $image_logo ?>' }">
+                    <img :src="imgsrc" alt="Zax Resto" class="mb-3 w-24 h-14 inline-block">
+                <h3 class="text-center text-2xl mb-4">Closing Balance</h3>
+                </div>
+                <hr class="my-4 border-t-2 border-gray-300">
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Jumlah Open Register</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <div
+                            class="text-right flex-grow text-cyan-500"
+                            x-text="priceFormat(openingbalance)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Cash</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <div
+                            :class="(input_closing_cash<Amount_Cash || input_closing_cash === 0|| isNaN(input_closing_cash) )?'text-right flex-grow text-pink-600':'text-right flex-grow text-cyan-500'"
+                            x-text="priceFormat(Amount_Cash)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Card</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <div
+                            :class="(input_closing_card<Amount_Card || input_closing_card === 0|| isNaN(input_closing_card) )?'text-right flex-grow text-pink-600':'text-right flex-grow text-cyan-500'"
+                            x-text="priceFormat(Amount_Card)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <h3 class="text-left text-sm mb-2 text-gray-600">Amount Bank Transfer</h3>
+                    </div>
+                    <div class="flex-grow w-2/5 justify-end text-right">
+                        <div
+                            :class="(input_closing_banktransfer<Amount_Bank_Transfer || input_closing_banktransfer === 0 || isNaN(input_closing_banktransfer) )?'text-right flex-grow text-pink-600':'text-right flex-grow text-cyan-500'"
+                            x-text="priceFormat(Amount_Bank_Transfer)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <p>Jumlah Cash</p>
+                    </div>
+                    <div class="flex text-right">
+                        <div class="mr-2">Rp</div>
+                        <input x-bind:value="numberFormat(input_closing_cash)" x-on:keyup="updateCloseCash($event.target.value)" type="text" class="w-28 text-right bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <p>Jumlah Card</p>
+                    </div>
+                    <div class="flex text-right">
+                        <div class="mr-2">Rp</div>
+                        <input x-bind:value="numberFormat(input_closing_card)" x-on:keyup="updateCloseCard($event.target.value)" type="text" class="w-28 text-right bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <p>Jumlah Bank Transfer</p>
+                    </div>
+                    <div class="flex text-right">
+                        <div class="mr-2">Rp</div>
+                        <input x-bind:value="numberFormat(input_closing_banktransfer)" x-on:keyup="updateCloseBankTransfer($event.target.value)" type="text" class="w-28 text-right bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <p>Total Closing</p>
+                    </div>
+                    <div class="flex text-right">
+                       <div
+                            class="text-right flex-grow text-cyan-500"
+                            x-text="priceFormat(total_closing)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mt-4 justify-between items-center text-lg font-semibold">
+                    <div class="flex-grow w-1/2 text-left ml-6">
+                        <p>Catatan</p>
+                    </div>
+                    <div class="flex text-right">
+                        <input x-bind:value="note_closing" x-on:keyup="updateNoteClosing($event.target.value)" type="text" class="w-96 text-left bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 w-full">
+            <button
+                class="text-white rounded-2xl text-lg w-full py-3 focus:outline-none"
+                x-bind:class="{
+                    'bg-cyan-500 hover:bg-cyan-600': submitClosing(),
+                    'bg-blue-gray-200': !submitClosing()
+                }"
+                :disabled="!submitClosing()"
+                x-on:click="submitEndCashier()">Closing Cashier
+            </button>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL CLOSE BALANCE --> 
+     <div id="print-area" class="print-area"></div>
 </body>
 </html>
